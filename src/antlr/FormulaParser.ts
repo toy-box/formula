@@ -1,4 +1,4 @@
-// Generated from ./src/formula/FormulaParser.g4 by ANTLR 4.9.0-SNAPSHOT
+// Generated from ./src/antlr/FormulaParser.g4 by ANTLR 4.9.0-SNAPSHOT
 
 import { ATN } from 'antlr4ts/atn/ATN';
 import { ATNDeserializer } from 'antlr4ts/atn/ATNDeserializer';
@@ -13,7 +13,7 @@ import { ParseTreeListener } from 'antlr4ts/tree/ParseTreeListener';
 import { ParseTreeVisitor } from 'antlr4ts/tree/ParseTreeVisitor';
 import { RecognitionException } from 'antlr4ts/RecognitionException';
 import { RuleContext } from 'antlr4ts/RuleContext';
-//import { RuleVersion } from "antlr4ts/RuleVersion"
+//import { RuleVersion } from "antlr4ts/RuleVersion";
 import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
 import { Token } from 'antlr4ts/Token';
 import { TokenStream } from 'antlr4ts/TokenStream';
@@ -571,7 +571,7 @@ export class FormulaParser extends Parser {
     '0,\x03\x02\x02\x020-\x03\x02\x02\x020.\x03\x02\x02\x020/\x03\x02\x02\x02' +
     '1:\x03\x02\x02\x0223\f\x05\x02\x0234\t\x02\x02\x0249\x05\x0E\b\x0656\f' +
     '\x04\x02\x0267\t\x03\x02\x0279\x05\x0E\b\x0582\x03\x02\x02\x0285\x03\x02' +
-    '\x02\x029<\x03\x02\x02\x02:8\x03\x02\x02\x02:\x03\x02\x02\x02\x0F\x03' +
+    '\x02\x029<\x03\x02\x02\x02:8\x03\x02\x02\x02:;\x03\x02\x02\x02;\x0F\x03' +
     '\x02\x02\x02<:\x03\x02\x02\x02\b\x15\x17 08:';
   public static __ATN: ATN;
   public static get _ATN(): ATN {

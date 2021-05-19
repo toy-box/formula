@@ -7,10 +7,11 @@
     "docs:deploy": "gh-pages -d docs-dist",
     "build": "father-build",
     "deploy": "npm run docs:build && npm run docs:deploy",
-    "release": "npm run build && npm publish",
+    "release": "npm run build && npm publish --access public",
     "prettier": "prettier --write \"**/*.{js,jsx,tsx,ts,less,md,json}\"",
     "test": "umi-test",
-    "test:coverage": "umi-test --coverage"
+    "test:coverage": "umi-test --coverage",
+    "antlr4ts": "antlr4ts  ./src/antlr/FormulaParser.g4 ./src/antlr/FormulaLexer.g4"
   },
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -38,6 +39,7 @@
     "gh-pages": "^3.0.0",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.1",
+    "ts-node": "^9.1.1",
     "yorkie": "^2.0.0"
   }
 }
