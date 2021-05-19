@@ -1,5 +1,5 @@
 {
-  "name": "toybox-formula",
+  "name": "@toy-box/formula",
   "version": "1.0.0",
   "scripts": {
     "start": "dumi dev",
