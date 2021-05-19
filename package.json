@@ -27,6 +27,7 @@
     ]
   },
   "dependencies": {
+    "@formulajs/formulajs": "^2.6.9",
     "antlr4ts": "^0.5.0-alpha.4"
   },
   "devDependencies": {
