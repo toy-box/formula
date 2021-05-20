@@ -12,6 +12,8 @@ test('sum 1 and 2 + field to equal 4', () => {
   expect(formulaParse('SUM(1, 2) + {!field}', () => 1).result).toBe(4);
 });
 
-test('concat "A" and " " to equal "A "', () => {
-  expect(formulaParse('CONCATENATE("A", " ")', () => 1).result).toBe('A ');
+test('concat {!first} and " " and {!last} to equal "{!first} {!last}"', () => {
+  expect(
+    formulaParse('CONCATENATE({!first}, " ", {!last})', (path) => path).result,
+  ).toBe('{!first} {!last}');
 });
