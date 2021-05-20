@@ -60,6 +60,7 @@ export class FormulaParserListenerImpl implements FormulaParserListener {
       ...args: any[]
     ) => any;
     if (fn == null) {
+      this.parseException = new ParserException('function not exists');
       this.parseResult = {
         success: false,
         result: new ParserException('function not exists'),
