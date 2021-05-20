@@ -44,7 +44,12 @@ export class FormulaParserListenerImpl implements FormulaParserListener {
   }
 
   exitStringLiteralExpression(ctx: StringLiteralExpressionContext) {
-    this.parserMap.set(ctx, ctx.StringLiteral().text);
+    this.parserMap.set(
+      ctx,
+      ctx
+        .StringLiteral()
+        .text.substring(1, ctx.StringLiteral().text.length - 1),
+    );
   }
 
   exitVariableExpression(ctx: VariableExpressionContext) {
