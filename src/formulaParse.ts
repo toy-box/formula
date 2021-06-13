@@ -18,9 +18,24 @@ export function formulaParse(
   const parser = new FormulaParser(tokens);
   parser.buildParseTree = true;
   const tree = parser.stat();
+
   const listener: FormulaParserListener = new FormulaParserListenerImpl(
     getFieldValue,
   );
   ParseTreeWalker.DEFAULT.walk(listener, tree);
   return listener.getResult();
+}
+
+export function formulaTreeTest(formula: string) {
+  try {
+    const chars = CharStreams.fromString(formula);
+    const lexer = new FormulaLexer(chars);
+    const tokens = new CommonTokenStream(lexer);
+    const parser = new FormulaParser(tokens);
+    parser.buildParseTree = true;
+    const tree = parser.stat();
+    return true;
+  } catch {
+    return false;
+  }
 }

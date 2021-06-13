@@ -1,2 +1,2 @@
-export *  from './antlr'
-export { formulaParse } from './formulaParse'
+export * from './antlr';
+export { formulaParse, formulaTreeTest } from './formulaParse';
