@@ -18,7 +18,6 @@ export function formulaParse(
   const parser = new FormulaParser(tokens);
   parser.buildParseTree = true;
   const tree = parser.stat();
-
   const listener: FormulaParserListener = new FormulaParserListenerImpl(
     getFieldValue,
   );

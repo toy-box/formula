@@ -44,6 +44,7 @@ export class FormulaParserListenerImpl implements FormulaParserListener {
   }
 
   exitStringLiteralExpression(ctx: StringLiteralExpressionContext) {
+    console.log('exitStringLiteralExpression', ctx.StringLiteral());
     this.parserMap.set(
       ctx,
       ctx

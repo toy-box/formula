@@ -13,7 +13,6 @@ FunctionLiteral=12
 DecimalLiteral=13
 StringLiteral=14
 WhiteSpaces=15
-UnexpectedCharacter=16
 '('=1
 ')'=2
 '{'=3

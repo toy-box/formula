@@ -40,7 +40,6 @@ export class FormulaParser extends Parser {
   public static readonly DecimalLiteral = 13;
   public static readonly StringLiteral = 14;
   public static readonly WhiteSpaces = 15;
-  public static readonly UnexpectedCharacter = 16;
   public static readonly RULE_stat = 0;
   public static readonly RULE_arguments = 1;
   public static readonly RULE_argumentList = 2;
@@ -88,7 +87,6 @@ export class FormulaParser extends Parser {
     'DecimalLiteral',
     'StringLiteral',
     'WhiteSpaces',
-    'UnexpectedCharacter',
   ];
   public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(
     FormulaParser._LITERAL_NAMES,
@@ -547,7 +545,7 @@ export class FormulaParser extends Parser {
   }
 
   public static readonly _serializedATN: string =
-    '\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x12>\x04\x02' +
+    '\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x11>\x04\x02' +
     '\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07' +
     '\t\x07\x04\b\t\b\x03\x02\x03\x02\x03\x03\x03\x03\x03\x03\x05\x03\x16\n' +
     '\x03\x05\x03\x18\n\x03\x03\x03\x03\x03\x03\x04\x03\x04\x03\x04\x07\x04' +
