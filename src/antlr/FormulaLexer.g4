@@ -99,8 +99,8 @@ TextFunctionLiteral:
 	| 'UPPER'
 
 // Extend function literals
-ExtendFunctionLiteral:
-	'TEXT'
+//ExtendFunctionLiteral:
+//	'TEXT'
 
 // Function Literals
 FunctionLiteral:
