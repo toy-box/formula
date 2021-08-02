@@ -45,7 +45,7 @@ DateFunctionLiteral:
 	| 'WEEKNUM'
 	| 'WORKDAY'
 	| 'WORKDAYINTL'
-	| 'YEARFRAC'
+	| 'YEARFRAC';
 
 // Logic function literals
 LogicFunctionLiterals:
@@ -54,7 +54,7 @@ LogicFunctionLiterals:
 	| 'NOT'
 	| 'OR'
 	| 'SWITCH'
-	| 'XOR'
+	| 'XOR';
 
 // Math function literals
 MathFunctionLiterals:
@@ -77,7 +77,7 @@ MathFunctionLiterals:
 	| 'AVERAGE'
 	| 'SUM'
 	| 'COUNT'
-	| 'POWER'
+	| 'POWER';
 
 // Text function literals
 TextFunctionLiteral:
@@ -96,7 +96,7 @@ TextFunctionLiteral:
 	| 'SPLIT'
 	| 'SUBSTITUTE'
 	| 'TRIM'
-	| 'UPPER'
+	| 'UPPER';
 
 // Extend function literals
 //ExtendFunctionLiteral:
@@ -107,7 +107,7 @@ FunctionLiteral:
 	DateFunctionLiteral
 	| LogicFunctionLiterals
 	| MathFunctionLiterals
-	| TextFunctionLiteral
+	| TextFunctionLiteral;
 	
 
 	/// Numeric Literals
