@@ -27,8 +27,6 @@ export interface ParseResult {
  * `FormulaParser`.
  */
 export interface FormulaParserListener extends ParseTreeListener {
-  getResult: () => ParseResult;
-
   /**
    * Enter a parse tree produced by the `DecimalLiteralExpression`
    * labeled alternative in `FormulaParser.singleExpression`.

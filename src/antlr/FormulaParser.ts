@@ -36,10 +36,14 @@ export class FormulaParser extends Parser {
   public static readonly Divide = 9;
   public static readonly BooleanLiteral = 10;
   public static readonly FieldLiteral = 11;
-  public static readonly FunctionLiteral = 12;
-  public static readonly DecimalLiteral = 13;
-  public static readonly StringLiteral = 14;
-  public static readonly WhiteSpaces = 15;
+  public static readonly DateFunctionLiteral = 12;
+  public static readonly LogicFunctionLiterals = 13;
+  public static readonly MathFunctionLiterals = 14;
+  public static readonly TextFunctionLiteral = 15;
+  public static readonly FunctionLiteral = 16;
+  public static readonly DecimalLiteral = 17;
+  public static readonly StringLiteral = 18;
+  public static readonly WhiteSpaces = 19;
   public static readonly RULE_stat = 0;
   public static readonly RULE_arguments = 1;
   public static readonly RULE_argumentList = 2;
@@ -83,6 +87,10 @@ export class FormulaParser extends Parser {
     'Divide',
     'BooleanLiteral',
     'FieldLiteral',
+    'DateFunctionLiteral',
+    'LogicFunctionLiterals',
+    'MathFunctionLiterals',
+    'TextFunctionLiteral',
     'FunctionLiteral',
     'DecimalLiteral',
     'StringLiteral',
@@ -545,7 +553,7 @@ export class FormulaParser extends Parser {
   }
 
   public static readonly _serializedATN: string =
-    '\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x11>\x04\x02' +
+    '\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x15>\x04\x02' +
     '\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07' +
     '\t\x07\x04\b\t\b\x03\x02\x03\x02\x03\x03\x03\x03\x03\x03\x05\x03\x16\n' +
     '\x03\x05\x03\x18\n\x03\x03\x03\x03\x03\x03\x04\x03\x04\x03\x04\x07\x04' +
@@ -563,8 +571,8 @@ export class FormulaParser extends Parser {
     '\b\x05\x02\x1C\x1D\x07\x07\x02\x02\x1D\x1F\x05\b\x05\x02\x1E\x1C\x03\x02' +
     '\x02\x02\x1F"\x03\x02\x02\x02 \x1E\x03\x02\x02\x02 !\x03\x02\x02\x02' +
     '!\x07\x03\x02\x02\x02" \x03\x02\x02\x02#$\x05\x0E\b\x02$\t\x03\x02\x02' +
-    "\x02%&\x07\r\x02\x02&\v\x03\x02\x02\x02'(\x07\x0E\x02\x02()\x05\x04\x03" +
-    '\x02)\r\x03\x02\x02\x02*+\b\b\x01\x02+1\x07\x0F\x02\x02,1\x07\x10\x02' +
+    "\x02%&\x07\r\x02\x02&\v\x03\x02\x02\x02'(\x07\x12\x02\x02()\x05\x04\x03" +
+    '\x02)\r\x03\x02\x02\x02*+\b\b\x01\x02+1\x07\x13\x02\x02,1\x07\x14\x02' +
     '\x02-1\x07\f\x02\x02.1\x05\n\x06\x02/1\x05\f\x07\x020*\x03\x02\x02\x02' +
     '0,\x03\x02\x02\x020-\x03\x02\x02\x020.\x03\x02\x02\x020/\x03\x02\x02\x02' +
     '1:\x03\x02\x02\x0223\f\x05\x02\x0234\t\x02\x02\x0249\x05\x0E\b\x0656\f' +
