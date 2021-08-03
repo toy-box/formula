@@ -2,106 +2,82 @@ import { TYPE, TYPES } from './types';
 import { DateType } from './DateType';
 import { inTypes, DATE_TYPE, NUMBER_TYPE, UNKNOW_TYPE } from './common';
 
-export function DATE(
-  year: DateType,
-  month: DateType,
-  day: DateType,
-  ...args: any
-): DateType {
-  if (args != null) {
-    return UNKNOW_TYPE;
+export const DATE = (...args: DateType[]): DateType => {
+  if (args.length !== 3) {
+    return new DateType('unknow');
   }
-  return inTypes(year, NUMBER_TYPE) &&
-    inTypes(month, NUMBER_TYPE) &&
-    inTypes(day, NUMBER_TYPE)
-    ? { types: ['date', 'datetime'] }
-    : UNKNOW_TYPE;
-}
+  return args.every((arg) => arg.isDecimalLike)
+    ? new DateType('date')
+    : new DateType('unknow');
+};
 
-export function DATEVALUE(date: DateType, ...args: any): DateType {
-  if (args != null) {
-    return UNKNOW_TYPE;
+export const DATEVALUE = (...args: DateType[]): DateType => {
+  if (args.length !== 1) {
+    return new DateType('unknow');
   }
-  return inTypes(date, DATE_TYPE) ? { types: 'string' } : UNKNOW_TYPE;
-}
+  return args[0].isDateLike ? new DateType('string') : new DateType('unknow');
+};
 
-export function DAY(date: DateType): DateType {
-  return inTypes(date, DATE_TYPE) ? { types: 'integer' } : UNKNOW_TYPE;
-}
-
-export function DAYS(arg1: DateType, arg2: DateType, ...args: any): DateType {
-  if (inTypes(arg1, DATE_TYPE) && inTypes(arg2, DATE_TYPE) && args == null) {
-    return new DateType('integer');
+export const DAY = (...args: DateType[]): DateType => {
+  if (args.length !== 1) {
+    return new DateType('unknow');
   }
-  return UNKNOW_TYPE;
-}
+  return args[0].isDateLike ? new DateType('integer') : new DateType('unknow');
+};
 
-export function DAYS360(
-  arg1: DateType,
-  arg2: DateType,
-  ...args: any
-): DateType {
-  if (inTypes(arg1, DATE_TYPE) && inTypes(arg2, DATE_TYPE) && args == null) {
-    return new DateType('integer');
+export const DAYS = (...args: DateType[]): DateType => {
+  if (args.length !== 2) {
+    return new DateType('unknow');
   }
-  return UNKNOW_TYPE;
-}
+  return args.every((arg) => arg.isDateLike)
+    ? new DateType('integer')
+    : new DateType('unknow');
+};
 
-export function EDATE(
-  arg1: DateType,
-  arg2: DateType,
-  ...args: any[]
-): DateType {
-  if (inTypes(arg1, DATE_TYPE) && inTypes(arg2, NUMBER_TYPE) && args == null) {
-    return arg1;
+export const DAYS360 = (...args: DateType[]): DateType => {
+  if (args.length !== 2) {
+    return new DateType('unknow');
   }
-  return UNKNOW_TYPE;
-}
+  return args.every((arg) => arg.isDateLike)
+    ? new DateType('integer')
+    : new DateType('unknow');
+};
 
-export function EOMONTH(
-  arg1: DateType,
-  arg2: DateType,
-  ...args: any[]
-): DateType {
-  if (inTypes(arg1, DATE_TYPE) && inTypes(arg2, NUMBER_TYPE) && args == null) {
-    return arg1;
+export const EDATE = (...args: DateType[]): DateType => {
+  if (args.length !== 2) {
+    return new DateType('unknow');
   }
-  return UNKNOW_TYPE;
-}
+  return args[0].isDateLike && args[1].isDecimalLike
+    ? new DateType('datetime')
+    : new DateType('unknow');
+};
 
-export function HOUR(arg1: DateType, ...args: any[]): DateType {
-  if (inTypes(arg1, DATE_TYPE) && args == null) {
-    return new DateType('integer');
+export const EOMONTH = (...args: DateType[]): DateType => {
+  if (args.length !== 2) {
+    return new DateType('unknow');
   }
-  return UNKNOW_TYPE;
-}
+  return args[0].isDateLike && args[1].isDecimalLike
+    ? new DateType('datetime')
+    : new DateType('unknow');
+};
 
-export function MINUTE(arg1: DateType, ...args: any[]): DateType {
-  if (inTypes(arg1, DATE_TYPE) && args == null) {
-    return new DateType('integer');
+export const HOUR = (...args: DateType[]): DateType => {
+  if (args.length !== 1) {
+    return new DateType('unknow');
   }
-  return UNKNOW_TYPE;
-}
+  return args[0].isDateLike ? new DateType('integer') : new DateType('unknow');
+};
+export const MINUTE = HOUR;
 
-export function ISOWEEKNUM(arg1: DateType, ...args: TYPES[]): DateType {
-  if (inTypes(arg1, DATE_TYPE) && args == null) {
-    return new DateType('integer');
-  }
-  return UNKNOW_TYPE;
-}
+export const ISOWEEKNUM = HOUR;
 
-export function MONTH(arg1: DateType, ...args: any[]): DateType {
-  if (inTypes(arg1, DATE_TYPE) && args == null) {
-    return new DateType('integer');
-  }
-  return UNKNOW_TYPE;
-}
+export const MONTH = HOUR;
 
 export function NOW(...args: DateType[]): DateType {
-  if (args == null) {
-    return new DateType('integer');
+  if (args.length !== 0) {
+    return new DateType('unknow');
   }
-  return UNKNOW_TYPE;
+  return new DateType('datetime');
 }
 
 export function SECOND(arg1: DateType, ...args: any[]): DateType {
