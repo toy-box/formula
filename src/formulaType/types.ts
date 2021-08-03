@@ -6,6 +6,7 @@ export type TYPE =
   | 'date'
   | 'datetime'
   | 'timestamp'
+  | 'time'
   | 'boolean'
   | 'array'
   | 'object'

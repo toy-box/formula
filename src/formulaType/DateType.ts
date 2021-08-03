@@ -1,4 +1,3 @@
-import uniq from 'lodash.uniq';
 import { IDateType, TYPES, TYPE } from './types';
 import { UNKNOW_TYPE } from './common';
 
@@ -25,6 +24,10 @@ export class DateType {
     return this.types.every(
       (t) => t.type === 'array' && t.itemType === itemType,
     );
+  }
+
+  inTypes(types: TYPE[]) {
+    return this.types.every((t) => types.includes(t.type));
   }
 
   get isMixType() {

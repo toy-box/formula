@@ -13,7 +13,7 @@ import {
   NOW,
 } from './date';
 import { SUM, MAX } from './math';
-import { TYPES, DateType } from './types';
+import { DateType } from './DateType';
 
 export const formulaType: Record<string, (...args: any) => DateType> = {
   DATE,

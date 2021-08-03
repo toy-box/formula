@@ -1,8 +1,6 @@
-import { TYPE, TYPES } from './types';
 import { DateType } from './DateType';
-import { inTypes, DATE_TYPE, NUMBER_TYPE, UNKNOW_TYPE } from './common';
 
-export const DATE = (...args: DateType[]): DateType => {
+export const DATE = (...args: DateType[]) => {
   if (args.length !== 3) {
     return new DateType('unknow');
   }
@@ -11,21 +9,21 @@ export const DATE = (...args: DateType[]): DateType => {
     : new DateType('unknow');
 };
 
-export const DATEVALUE = (...args: DateType[]): DateType => {
+export const DATEVALUE = (...args: DateType[]) => {
   if (args.length !== 1) {
     return new DateType('unknow');
   }
   return args[0].isDateLike ? new DateType('string') : new DateType('unknow');
 };
 
-export const DAY = (...args: DateType[]): DateType => {
+export const DAY = (...args: DateType[]) => {
   if (args.length !== 1) {
     return new DateType('unknow');
   }
   return args[0].isDateLike ? new DateType('integer') : new DateType('unknow');
 };
 
-export const DAYS = (...args: DateType[]): DateType => {
+export const DAYS = (...args: DateType[]) => {
   if (args.length !== 2) {
     return new DateType('unknow');
   }
@@ -34,7 +32,7 @@ export const DAYS = (...args: DateType[]): DateType => {
     : new DateType('unknow');
 };
 
-export const DAYS360 = (...args: DateType[]): DateType => {
+export const DAYS360 = (...args: DateType[]) => {
   if (args.length !== 2) {
     return new DateType('unknow');
   }
@@ -43,7 +41,7 @@ export const DAYS360 = (...args: DateType[]): DateType => {
     : new DateType('unknow');
 };
 
-export const EDATE = (...args: DateType[]): DateType => {
+export const EDATE = (...args: DateType[]) => {
   if (args.length !== 2) {
     return new DateType('unknow');
   }
@@ -52,7 +50,7 @@ export const EDATE = (...args: DateType[]): DateType => {
     : new DateType('unknow');
 };
 
-export const EOMONTH = (...args: DateType[]): DateType => {
+export const EOMONTH = (...args: DateType[]) => {
   if (args.length !== 2) {
     return new DateType('unknow');
   }
@@ -61,28 +59,61 @@ export const EOMONTH = (...args: DateType[]): DateType => {
     : new DateType('unknow');
 };
 
-export const HOUR = (...args: DateType[]): DateType => {
+const oneArgReturnInt = (...args: DateType[]) => {
   if (args.length !== 1) {
     return new DateType('unknow');
   }
   return args[0].isDateLike ? new DateType('integer') : new DateType('unknow');
 };
-export const MINUTE = HOUR;
 
-export const ISOWEEKNUM = HOUR;
+export const HOUR = oneArgReturnInt;
 
-export const MONTH = HOUR;
+export const MINUTE = oneArgReturnInt;
 
-export function NOW(...args: DateType[]): DateType {
+export const ISOWEEKNUM = oneArgReturnInt;
+
+export const MONTH = oneArgReturnInt;
+
+export const SECOND = oneArgReturnInt;
+
+export const WEEKDAY = oneArgReturnInt;
+
+export const YEAR = oneArgReturnInt;
+
+export const NOW = (...args: DateType[]) => {
   if (args.length !== 0) {
     return new DateType('unknow');
   }
   return new DateType('datetime');
-}
+};
 
-export function SECOND(arg1: DateType, ...args: any[]): DateType {
-  if (inTypes(arg1, DATE_TYPE) && args == null) {
-    return new DateType('integer');
+export const TODAY = (...args: DateType[]) => {
+  if (args.length !== 0) {
+    return new DateType('unknow');
   }
-  return UNKNOW_TYPE;
-}
+  return new DateType('date');
+};
+
+export const TIMENOW = (...args: DateType[]) => {
+  if (args.length !== 0) {
+    return new DateType('unknow');
+  }
+  return new DateType('time');
+};
+
+export const TIMEVALUE = (...args: DateType[]) => {
+  if (args.length !== 1) {
+    return new DateType('unknow');
+  }
+  if (args[0].inTypes(['string', 'date', 'datetime', 'timestamp'])) {
+    return new DateType('number');
+  }
+  return new DateType('unknow');
+};
+
+export const WEEKNUM = (...args: DateType[]) => {
+  if (args.length !== 2) {
+    return new DateType('unknow');
+  }
+  return new DateType('integer');
+};
