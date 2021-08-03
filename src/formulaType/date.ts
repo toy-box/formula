@@ -1,4 +1,5 @@
-import { TYPE, TYPES, DateType } from './types';
+import { TYPE, TYPES } from './types';
+import { DateType } from './DateType';
 import { inTypes, DATE_TYPE, NUMBER_TYPE, UNKNOW_TYPE } from './common';
 
 export function DATE(
@@ -30,7 +31,7 @@ export function DAY(date: DateType): DateType {
 
 export function DAYS(arg1: DateType, arg2: DateType, ...args: any): DateType {
   if (inTypes(arg1, DATE_TYPE) && inTypes(arg2, DATE_TYPE) && args == null) {
-    return { types: 'integer' };
+    return new DateType('integer');
   }
   return UNKNOW_TYPE;
 }
@@ -41,7 +42,7 @@ export function DAYS360(
   ...args: any
 ): DateType {
   if (inTypes(arg1, DATE_TYPE) && inTypes(arg2, DATE_TYPE) && args == null) {
-    return { types: 'integer' };
+    return new DateType('integer');
   }
   return UNKNOW_TYPE;
 }
@@ -70,42 +71,42 @@ export function EOMONTH(
 
 export function HOUR(arg1: DateType, ...args: any[]): DateType {
   if (inTypes(arg1, DATE_TYPE) && args == null) {
-    return { types: 'integer' };
+    return new DateType('integer');
   }
   return UNKNOW_TYPE;
 }
 
 export function MINUTE(arg1: DateType, ...args: any[]): DateType {
   if (inTypes(arg1, DATE_TYPE) && args == null) {
-    return { types: 'integer' };
+    return new DateType('integer');
   }
   return UNKNOW_TYPE;
 }
 
 export function ISOWEEKNUM(arg1: DateType, ...args: TYPES[]): DateType {
   if (inTypes(arg1, DATE_TYPE) && args == null) {
-    return { types: 'integer' };
+    return new DateType('integer');
   }
   return UNKNOW_TYPE;
 }
 
 export function MONTH(arg1: DateType, ...args: any[]): DateType {
   if (inTypes(arg1, DATE_TYPE) && args == null) {
-    return { types: 'integer' };
+    return new DateType('integer');
   }
   return UNKNOW_TYPE;
 }
 
 export function NOW(...args: DateType[]): DateType {
   if (args == null) {
-    return { types: 'datetime' };
+    return new DateType('integer');
   }
   return UNKNOW_TYPE;
 }
 
 export function SECOND(arg1: DateType, ...args: any[]): DateType {
   if (inTypes(arg1, DATE_TYPE) && args == null) {
-    return { types: 'integer' };
+    return new DateType('integer');
   }
   return UNKNOW_TYPE;
 }

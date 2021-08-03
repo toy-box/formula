@@ -1,5 +1,5 @@
 import uniq from 'lodash.uniq';
-import { TYPE, TYPES, DateType } from './types';
+import { TYPE, TYPES, IDateType } from './types';
 
 export function numbersFn(arg: TYPE[] | TYPE, ...args: TYPE[]) {
   if (Array.isArray(arg) && args == null) {
@@ -54,7 +54,7 @@ export function mixTypes(type1: DateType, type2: DateType): DateType {
   return { types: uniq([...arrTypes(type1), ...arrTypes(type2)]) };
 }
 
-export const STRING_TYPE: DateType = { types: ['string', 'text'] };
-export const DATE_TYPE: DateType = { types: ['date', 'datetime', 'timestamp'] };
+export const STRING_TYPE: IDateType = { type: ['string', 'text'] };
+export const DATE_TYPE: DateType = { type: ['date', 'datetime', 'timestamp'] };
 export const NUMBER_TYPE: DateType = { types: ['integer', 'number'] };
-export const UNKNOW_TYPE: DateType = { types: 'unknow' };
+export const UNKNOW_TYPE: DateType = { type: 'unknow' };

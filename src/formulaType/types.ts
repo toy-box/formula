@@ -7,10 +7,13 @@ export type TYPE =
   | 'datetime'
   | 'timestamp'
   | 'boolean'
+  | 'array'
+  | 'object'
   | 'unknow';
 
 export type TYPES = TYPE | TYPE[];
 
-export interface DateType {
-  types: TYPES;
+export interface IDateType {
+  type: TYPE;
+  itemType?: TYPE;
 }
