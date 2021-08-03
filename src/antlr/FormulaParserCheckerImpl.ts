@@ -1,4 +1,3 @@
-import formulajs, { FormulaType } from '@formulajs/formulajs';
 import {
   AdditiveExpressionContext,
   ArgumentContext,
@@ -14,63 +13,67 @@ import {
   StringLiteralExpressionContext,
   VariableExpressionContext,
 } from './FormulaParser';
-import { FormulaParserListener, ParseResult } from './FormulaParserListener';
+import { FormulaParserChecker } from './FormulaParserChecker';
 import { ParserException } from './ParserException';
+import { ParseType } from './types';
+import {
+  formulaType,
+  TYPES,
+  inTypes,
+  DATE_TYPE,
+  mixTypes,
+  NUMBER_TYPE,
+} from '../formulaType';
 
-declare type FieldValueGet = (pattern: string) => any;
+declare type FieldTypeGet = (pattern: string) => TYPES;
 
-export class FormulaParserListenerImpl implements FormulaParserListener {
-  private parseResult: ParseResult = {
-    success: false,
-    result: undefined,
-  };
+export class FormulaParserCheckerImpl implements FormulaParserChecker {
   private parseException?: ParserException;
   private parserMap = new WeakMap();
-  private getFieldValue: FieldValueGet;
+  private getFieldType: FieldTypeGet;
+  private parseType: ParseType;
 
-  constructor(getFieldValue: FieldValueGet) {
-    this.getFieldValue = getFieldValue;
+  constructor(getFieldType: FieldTypeGet) {
+    this.getFieldType = getFieldType;
+    this.parseType = {
+      success: false,
+      result: 'unknow',
+    };
   }
 
   exitBooleanLiteralExpression(ctx: BooleanLiteralExpressionContext) {
-    this.parserMap.set(
-      ctx,
-      ctx.BooleanLiteral().text.toUpperCase() === 'TRUE' ? true : false,
-    );
+    this.parserMap.set(ctx, 'boolean');
   }
 
   exitDecimalLiteralExpression(ctx: DecimalLiteralExpressionContext) {
-    this.parserMap.set(ctx, Number.parseFloat(ctx.DecimalLiteral().text));
+    console.log('exitDecimalLiteralExpression');
+    this.parserMap.set(ctx, NUMBER_TYPE);
   }
 
   exitStringLiteralExpression(ctx: StringLiteralExpressionContext) {
-    console.log('exitStringLiteralExpression', ctx.StringLiteral());
-    this.parserMap.set(
-      ctx,
-      ctx
-        .StringLiteral()
-        .text.substring(1, ctx.StringLiteral().text.length - 1),
-    );
+    this.parserMap.set(ctx, 'string');
   }
 
   exitVariableExpression(ctx: VariableExpressionContext) {
     this.parserMap.set(
       ctx,
-      this.getFieldValue(ctx.variable().FieldLiteral().text),
+      this.getFieldType(ctx.variable().FieldLiteral().text),
     );
   }
 
   exitFunction(ctx: FunctionContext) {
-    const args = this.parserMap.get(ctx.getChild(1)) as number[];
-    const fn = formulajs[ctx.getChild(0).text.toUpperCase() as FormulaType] as (
+    const args = this.parserMap.get(ctx.getChild(1));
+    const fn = formulaType[ctx.getChild(0).text.toUpperCase()] as (
       ...args: any[]
     ) => any;
+    console.log('exitFunction', args);
     if (fn == null) {
       this.parseException = new ParserException('function not exists');
-      this.parseResult = {
+      this.parseType = {
         success: false,
-        result: new ParserException('function not exists'),
+        result: 'unknow',
       };
+      this.parserMap.set(ctx, 'unknow');
     } else {
       this.parserMap.set(ctx, fn(...args));
     }
@@ -99,27 +102,44 @@ export class FormulaParserListenerImpl implements FormulaParserListener {
   }
 
   exitAdditiveExpression(ctx: AdditiveExpressionContext) {
-    const op = ctx.getChild(1).text;
     const left = this.parserMap.get(ctx.getChild(0));
     const right = this.parserMap.get(ctx.getChild(2));
-    this.parserMap.set(ctx, op === '+' ? left + right : left - right);
+    if (inTypes(left, NUMBER_TYPE) && inTypes(right, NUMBER_TYPE)) {
+      this.parserMap.set(ctx, mixTypes(left, right));
+    } else {
+      this.parseException = new ParserException('additive expression error');
+      this.parseType = {
+        success: false,
+        result: 'unknow',
+      };
+    }
   }
 
   exitMultiplicativeExpression(ctx: MultiplicativeExpressionContext) {
     const op = ctx.getChild(1).text;
     const left = this.parserMap.get(ctx.getChild(0));
     const right = this.parserMap.get(ctx.getChild(2));
-    this.parserMap.set(ctx, op === '*' ? left * right : left / right);
+    if (inTypes(left, DATE_TYPE) && inTypes(right, DATE_TYPE)) {
+      this.parserMap.set(ctx, ['number', 'integer']);
+    } else {
+      this.parseException = new ParserException(
+        'multiplicative expression error',
+      );
+      this.parseType = {
+        success: false,
+        result: 'unknow',
+      };
+    }
   }
 
   exitStat(ctx: StatContext) {
     if (this.parseException) {
-      this.parseResult = {
+      this.parseType = {
         success: false,
-        result: this.parseException,
+        result: 'unknow',
       };
     } else {
-      this.parseResult = {
+      this.parseType = {
         success: true,
         result: this.parserMap.get(ctx.getChild(0)),
       };
@@ -130,7 +150,7 @@ export class FormulaParserListenerImpl implements FormulaParserListener {
     this.parserMap.set(ctx, this.parserMap.get(ctx.getChild(0)));
   }
 
-  getResult() {
-    return this.parseResult;
+  getType() {
+    return this.parseType;
   }
 }

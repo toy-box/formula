@@ -3,10 +3,13 @@ import {
   CommonTokenStream,
   FormulaLexer,
   FormulaParser,
-  FormulaParserListener,
-  FormulaParserListenerImpl,
+  FormulaParserRuner,
+  FormulaParserRunerImpl,
   ParseTreeWalker,
 } from './antlr';
+import { TYPES } from './formulaType/types';
+import { FormulaParserCheckerImpl } from './antlr/FormulaParserCheckerImpl';
+import { FormulaParserChecker } from './antlr/FormulaParserChecker';
 
 export function formulaParse(
   formula: string,
@@ -18,11 +21,28 @@ export function formulaParse(
   const parser = new FormulaParser(tokens);
   parser.buildParseTree = true;
   const tree = parser.stat();
-  const listener: FormulaParserListener = new FormulaParserListenerImpl(
+  const listener: FormulaParserRuner = new FormulaParserRunerImpl(
     getFieldValue,
   );
   ParseTreeWalker.DEFAULT.walk(listener, tree);
   return listener.getResult();
+}
+
+export function formulaParseType(
+  formula: string,
+  getFieldType: (pattern: string) => TYPES,
+) {
+  const chars = CharStreams.fromString(formula);
+  const lexer = new FormulaLexer(chars);
+  const tokens = new CommonTokenStream(lexer);
+  const parser = new FormulaParser(tokens);
+  parser.buildParseTree = true;
+  const tree = parser.stat();
+  const listener: FormulaParserChecker = new FormulaParserCheckerImpl(
+    getFieldType,
+  );
+  ParseTreeWalker.DEFAULT.walk(listener, tree);
+  return listener.getType();
 }
 
 export function formulaTreeTest(formula: string) {

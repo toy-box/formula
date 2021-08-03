@@ -20,8 +20,8 @@ BooleanLiteral: 'true' | 'false';
 /// Field Literals
 FieldLiteral: Field;
 
-// Date function Literals
-DateFunctionLiteral:
+/// Function Literals
+FunctionLiteral:
 	'DATE'
 	| 'DATEVALUE'
 	| 'DAY'
@@ -45,20 +45,14 @@ DateFunctionLiteral:
 	| 'WEEKNUM'
 	| 'WORKDAY'
 	| 'WORKDAYINTL'
-	| 'YEARFRAC';
-
-// Logic function literals
-LogicFunctionLiterals:
-	'AND'
+	| 'YEARFRAC'
+	| 'AND'
 	| 'IF'
 	| 'NOT'
 	| 'OR'
 	| 'SWITCH'
-	| 'XOR';
-
-// Math function literals
-MathFunctionLiterals:
-	'ABS'
+	| 'XOR'
+  | 'ABS'
 	| 'CEILING'
 	| 'CEILINGMATH'
 	| 'EXP'
@@ -77,11 +71,8 @@ MathFunctionLiterals:
 	| 'AVERAGE'
 	| 'SUM'
 	| 'COUNT'
-	| 'POWER';
-
-// Text function literals
-TextFunctionLiteral:
-	'CONCATENATE'
+	| 'POWER'
+	| 'CONCATENATE'
 	| 'EXACT'
 	| 'FIND'
 	| 'LEFT'
@@ -98,19 +89,7 @@ TextFunctionLiteral:
 	| 'TRIM'
 	| 'UPPER';
 
-// Extend function literals
-//ExtendFunctionLiteral:
-//	'TEXT'
-
-// Function Literals
-FunctionLiteral:
-	DateFunctionLiteral
-	| LogicFunctionLiterals
-	| MathFunctionLiterals
-	| TextFunctionLiteral;
-	
-
-	/// Numeric Literals
+/// Numeric Literals
 DecimalLiteral:
   DecimalIntegerLiteral '.' [0-9]*
   | '.' [0-9]+

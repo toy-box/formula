@@ -17,11 +17,6 @@ import { VariableContext } from './FormulaParser';
 import { FunctionContext } from './FormulaParser';
 import { SingleExpressionContext } from './FormulaParser';
 
-export interface ParseResult {
-  success: boolean;
-  result: any;
-}
-
 /**
  * This interface defines a complete listener for a parse tree produced by
  * `FormulaParser`.
