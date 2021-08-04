@@ -16,16 +16,10 @@ import {
 import { FormulaParserChecker } from './FormulaParserChecker';
 import { ParserException } from './ParserException';
 import { ParseType } from './types';
-import {
-  formulaType,
-  TYPES,
-  inTypes,
-  DATE_TYPE,
-  mixTypes,
-  NUMBER_TYPE,
-} from '../formulaType';
+import { formulaType, TYPES } from '../formulaType';
+import { DataType } from '@/formulaType/DateType';
 
-declare type FieldTypeGet = (pattern: string) => TYPES;
+declare type FieldTypeGet = (pattern: string) => DataType;
 
 export class FormulaParserCheckerImpl implements FormulaParserChecker {
   private parseException?: ParserException;
@@ -37,21 +31,20 @@ export class FormulaParserCheckerImpl implements FormulaParserChecker {
     this.getFieldType = getFieldType;
     this.parseType = {
       success: false,
-      result: 'unknow',
+      result: new DataType('unknow'),
     };
   }
 
   exitBooleanLiteralExpression(ctx: BooleanLiteralExpressionContext) {
-    this.parserMap.set(ctx, 'boolean');
+    this.parserMap.set(ctx, new DataType('boolean'));
   }
 
   exitDecimalLiteralExpression(ctx: DecimalLiteralExpressionContext) {
-    console.log('exitDecimalLiteralExpression');
-    this.parserMap.set(ctx, NUMBER_TYPE);
+    this.parserMap.set(ctx, new DataType('number'));
   }
 
   exitStringLiteralExpression(ctx: StringLiteralExpressionContext) {
-    this.parserMap.set(ctx, 'string');
+    this.parserMap.set(ctx, new DataType('string'));
   }
 
   exitVariableExpression(ctx: VariableExpressionContext) {
@@ -63,17 +56,14 @@ export class FormulaParserCheckerImpl implements FormulaParserChecker {
 
   exitFunction(ctx: FunctionContext) {
     const args = this.parserMap.get(ctx.getChild(1));
-    const fn = formulaType[ctx.getChild(0).text.toUpperCase()] as (
-      ...args: any[]
-    ) => any;
-    console.log('exitFunction', args);
+    const fn = formulaType[ctx.getChild(0).text.toUpperCase()];
     if (fn == null) {
       this.parseException = new ParserException('function not exists');
       this.parseType = {
         success: false,
-        result: 'unknow',
+        result: new DataType('unknow'),
       };
-      this.parserMap.set(ctx, 'unknow');
+      this.parserMap.set(ctx, new DataType('unknow'));
     } else {
       this.parserMap.set(ctx, fn(...args));
     }
@@ -102,32 +92,32 @@ export class FormulaParserCheckerImpl implements FormulaParserChecker {
   }
 
   exitAdditiveExpression(ctx: AdditiveExpressionContext) {
-    const left = this.parserMap.get(ctx.getChild(0));
-    const right = this.parserMap.get(ctx.getChild(2));
-    if (inTypes(left, NUMBER_TYPE) && inTypes(right, NUMBER_TYPE)) {
-      this.parserMap.set(ctx, mixTypes(left, right));
+    const left = this.parserMap.get(ctx.getChild(0)) as DataType;
+    const right = this.parserMap.get(ctx.getChild(2)) as DataType;
+    if (left.isDecimalLike && right.isDecimalLike) {
+      this.parserMap.set(ctx, new DataType('number'));
     } else {
       this.parseException = new ParserException('additive expression error');
       this.parseType = {
         success: false,
-        result: 'unknow',
+        result: new DataType('unknow'),
       };
     }
   }
 
   exitMultiplicativeExpression(ctx: MultiplicativeExpressionContext) {
     const op = ctx.getChild(1).text;
-    const left = this.parserMap.get(ctx.getChild(0));
-    const right = this.parserMap.get(ctx.getChild(2));
-    if (inTypes(left, DATE_TYPE) && inTypes(right, DATE_TYPE)) {
-      this.parserMap.set(ctx, ['number', 'integer']);
+    const left = this.parserMap.get(ctx.getChild(0)) as DataType;
+    const right = this.parserMap.get(ctx.getChild(2)) as DataType;
+    if (left.isDecimalLike && right.isDecimalLike) {
+      this.parserMap.set(ctx, new DataType('number'));
     } else {
       this.parseException = new ParserException(
         'multiplicative expression error',
       );
       this.parseType = {
         success: false,
-        result: 'unknow',
+        result: new DataType('unknow'),
       };
     }
   }
@@ -136,7 +126,7 @@ export class FormulaParserCheckerImpl implements FormulaParserChecker {
     if (this.parseException) {
       this.parseType = {
         success: false,
-        result: 'unknow',
+        result: new DataType('unknow'),
       };
     } else {
       this.parseType = {

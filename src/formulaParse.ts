@@ -7,9 +7,9 @@ import {
   FormulaParserRunerImpl,
   ParseTreeWalker,
 } from './antlr';
-import { TYPES } from './formulaType/types';
 import { FormulaParserCheckerImpl } from './antlr/FormulaParserCheckerImpl';
 import { FormulaParserChecker } from './antlr/FormulaParserChecker';
+import { DataType } from './formulaType/DateType';
 
 export function formulaParse(
   formula: string,
@@ -30,7 +30,7 @@ export function formulaParse(
 
 export function formulaParseType(
   formula: string,
-  getFieldType: (pattern: string) => TYPES,
+  getFieldType: (pattern: string) => DataType,
 ) {
   const chars = CharStreams.fromString(formula);
   const lexer = new FormulaLexer(chars);
