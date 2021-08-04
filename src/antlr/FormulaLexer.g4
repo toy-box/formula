@@ -46,7 +46,6 @@ FunctionLiteral:
 	| 'NOT'
 	| 'OR'
 	| 'SWITCH'
-	| 'XOR'
   | 'ABS'
 	| 'CEILING'
 	| 'CEILINGMATH'

@@ -14,7 +14,7 @@ export type TYPE =
 
 export type TYPES = TYPE | TYPE[];
 
-export interface IDateType {
+export interface IDataType {
   type: TYPE;
   itemType?: TYPE;
 }

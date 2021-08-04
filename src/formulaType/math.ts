@@ -1,27 +1,78 @@
-import { DateType } from './DateType';
+import { DataType } from './DateType';
 
-const numbersToNumber = (...args: DateType[]) => {
-  if (args.length === 0) {
-    return new DateType('unknow');
-  }
-  return args.every((arg) => arg.isDecimalLike)
-    ? new DateType('number')
-    : new DateType('unknow');
+const isNullOrNumber = (arg: DataType) => {
+  return arg == null || arg.isDecimalLike;
 };
 
-// | 'CEILING'
-// | 'CEILINGMATH'
-// | 'EXP'
-// | 'FLOOR'
-// | 'FLOORMATH'
-// | 'LN'
-// | 'LOG'
-// | 'LOG10'
-// | 'MOD'
-// | 'ROUND'
-// | 'ROUNDDOWN'
-// | 'ROUNDUP'
-// | 'SQRT'
+const numbersToNumber = (...args: DataType[]) => {
+  if (args.length === 0) {
+    return new DataType('unknow');
+  }
+  return args.every((arg) => arg.isDecimalLike)
+    ? new DataType('number')
+    : new DataType('unknow');
+};
+
+const oneNumberToNumber = (...args: DataType[]) => {
+  if (args.length === 1 && args[0].isDecimalLike) {
+    return new DataType('number');
+  }
+  return new DataType('unknow');
+};
+
+const twoNumberOpt1ToNumber = (...args: DataType[]) => {
+  if (
+    args.length >= 1 &&
+    args.length <= 2 &&
+    args[0].isDecimalLike &&
+    isNullOrNumber(args[1])
+  ) {
+    return new DataType('number');
+  }
+  return new DataType('unknow');
+};
+
+const twoNumberToNumber = (...args: DataType[]) => {
+  if (args.length === 2 && args[0].isDecimalLike && args[1].isDecimalLike) {
+    return new DataType('number');
+  }
+  return new DataType('unknow');
+};
+
+const threeNumberToNumber = (...args: DataType[]) => {
+  if (
+    args.length === 3 &&
+    args[0].isDecimalLike &&
+    args[1].isDecimalLike &&
+    args[2].isDecimalLike
+  ) {
+    return new DataType('number');
+  }
+  return new DataType('unknow');
+};
+
+const threeNumberOpt2ToNumber = (...args: DataType[]) => {
+  if (
+    args.length >= 1 &&
+    args.length <= 3 &&
+    args[0].isDecimalLike &&
+    isNullOrNumber(args[1]) &&
+    isNullOrNumber(args[2])
+  ) {
+    return new DataType('number');
+  }
+  return new DataType('unknow');
+};
+
+export const CEILING = twoNumberToNumber;
+
+export const CEILINGMATH = threeNumberOpt2ToNumber;
+
+export const EXP = oneNumberToNumber;
+
+export const FLOOR = twoNumberOpt1ToNumber;
+
+export const FLOORMATH = threeNumberOpt2ToNumber;
 
 export const MAX = numbersToNumber;
 
@@ -29,30 +80,34 @@ export const MIN = numbersToNumber;
 
 export const SUM = numbersToNumber;
 
-export const ABS = (...args: DateType[]) => {
-  if (args.length === 1 && args[0].isDecimalLike) {
-    return new DateType('number');
-  }
-  return new DateType('unknow');
+export const ABS = oneNumberToNumber;
+
+export const COUNT = (...args: DataType[]) => {
+  return new DataType('integer');
 };
 
-export const COUNT = (...args: DateType[]) => {
-  return new DateType('integer');
+export const COUNTA = (...args: DataType[]) => {
+  return new DataType('integer');
 };
 
-export const COUNTA = (...args: DateType[]) => {
-  return new DateType('integer');
+export const POWER = twoNumberToNumber;
+
+export const AVERAGE = (...args: DataType[]) => {
+  return new DataType('number');
 };
 
-export const POWER = (...args: DateType[]) => {
-  if (args.length !== 2) {
-    return new DateType('unknow');
-  }
-  return args.every((arg) => arg.isDecimalLike)
-    ? new DateType('number')
-    : new DateType('unknow');
-};
+export const LN = oneNumberToNumber;
 
-export const AVERAGE = (...args: DateType[]) => {
-  return new DateType('number');
-};
+export const LOG = twoNumberToNumber;
+
+export const LOG10 = oneNumberToNumber;
+
+export const MOD = twoNumberToNumber;
+
+export const ROUND = twoNumberToNumber;
+
+export const ROUNDDOWN = twoNumberToNumber;
+
+export const ROUNDUP = twoNumberToNumber;
+
+export const SQRT = oneNumberToNumber;

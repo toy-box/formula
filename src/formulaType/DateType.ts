@@ -1,16 +1,15 @@
-import { IDateType, TYPES, TYPE } from './types';
-import { UNKNOW_TYPE } from './common';
+import { IDataType, TYPE } from './types';
 
-const makeType = (type: TYPE | IDateType) => {
+const makeType = (type: TYPE | IDataType) => {
   if (typeof type === 'string') {
     return { type };
   }
   return type;
 };
 
-export class DateType {
-  types: IDateType[] = [UNKNOW_TYPE];
-  constructor(types: IDateType | TYPE | (TYPE | IDateType)[]) {
+export class DataType {
+  private types: IDataType[] = [];
+  constructor(types: IDataType | TYPE | (TYPE | IDataType)[]) {
     if (typeof types === 'string') {
       this.types = [{ type: types }];
     } else {
@@ -18,6 +17,10 @@ export class DateType {
         ? types.map((t) => makeType(t))
         : [makeType(types)];
     }
+  }
+
+  getTypes() {
+    return this.types;
   }
 
   checkArrayType(itemType: string) {

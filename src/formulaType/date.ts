@@ -1,69 +1,69 @@
-import { DateType } from './DateType';
+import { DataType } from './DateType';
 
-export const DATE = (...args: DateType[]) => {
+export const DATE = (...args: DataType[]) => {
   if (args.length !== 3) {
-    return new DateType('unknow');
+    return new DataType('unknow');
   }
   return args.every((arg) => arg.isDecimalLike)
-    ? new DateType('date')
-    : new DateType('unknow');
+    ? new DataType('date')
+    : new DataType('unknow');
 };
 
-export const DATEVALUE = (...args: DateType[]) => {
+export const DATEVALUE = (...args: DataType[]) => {
   if (args.length !== 1) {
-    return new DateType('unknow');
+    return new DataType('unknow');
   }
-  return args[0].isDateLike ? new DateType('string') : new DateType('unknow');
+  return args[0].isDateLike ? new DataType('string') : new DataType('unknow');
 };
 
-export const DAY = (...args: DateType[]) => {
+export const DAY = (...args: DataType[]) => {
   if (args.length !== 1) {
-    return new DateType('unknow');
+    return new DataType('unknow');
   }
-  return args[0].isDateLike ? new DateType('integer') : new DateType('unknow');
+  return args[0].isDateLike ? new DataType('integer') : new DataType('unknow');
 };
 
-export const DAYS = (...args: DateType[]) => {
+export const DAYS = (...args: DataType[]) => {
   if (args.length !== 2) {
-    return new DateType('unknow');
+    return new DataType('unknow');
   }
   return args.every((arg) => arg.isDateLike)
-    ? new DateType('integer')
-    : new DateType('unknow');
+    ? new DataType('integer')
+    : new DataType('unknow');
 };
 
-export const DAYS360 = (...args: DateType[]) => {
+export const DAYS360 = (...args: DataType[]) => {
   if (args.length !== 2) {
-    return new DateType('unknow');
+    return new DataType('unknow');
   }
   return args.every((arg) => arg.isDateLike)
-    ? new DateType('integer')
-    : new DateType('unknow');
+    ? new DataType('integer')
+    : new DataType('unknow');
 };
 
-export const EDATE = (...args: DateType[]) => {
+export const EDATE = (...args: DataType[]) => {
   if (args.length !== 2) {
-    return new DateType('unknow');
+    return new DataType('unknow');
   }
   return args[0].isDateLike && args[1].isDecimalLike
-    ? new DateType('datetime')
-    : new DateType('unknow');
+    ? new DataType('datetime')
+    : new DataType('unknow');
 };
 
-export const EOMONTH = (...args: DateType[]) => {
+export const EOMONTH = (...args: DataType[]) => {
   if (args.length !== 2) {
-    return new DateType('unknow');
+    return new DataType('unknow');
   }
   return args[0].isDateLike && args[1].isDecimalLike
-    ? new DateType('datetime')
-    : new DateType('unknow');
+    ? new DataType('datetime')
+    : new DataType('unknow');
 };
 
-const oneArgReturnInt = (...args: DateType[]) => {
+const oneArgReturnInt = (...args: DataType[]) => {
   if (args.length !== 1) {
-    return new DateType('unknow');
+    return new DataType('unknow');
   }
-  return args[0].isDateLike ? new DateType('integer') : new DateType('unknow');
+  return args[0].isDateLike ? new DataType('integer') : new DataType('unknow');
 };
 
 export const HOUR = oneArgReturnInt;
@@ -80,40 +80,40 @@ export const WEEKDAY = oneArgReturnInt;
 
 export const YEAR = oneArgReturnInt;
 
-export const NOW = (...args: DateType[]) => {
+export const NOW = (...args: DataType[]) => {
   if (args.length !== 0) {
-    return new DateType('unknow');
+    return new DataType('unknow');
   }
-  return new DateType('datetime');
+  return new DataType('datetime');
 };
 
-export const TODAY = (...args: DateType[]) => {
+export const TODAY = (...args: DataType[]) => {
   if (args.length !== 0) {
-    return new DateType('unknow');
+    return new DataType('unknow');
   }
-  return new DateType('date');
+  return new DataType('date');
 };
 
-export const TIMENOW = (...args: DateType[]) => {
+export const TIMENOW = (...args: DataType[]) => {
   if (args.length !== 0) {
-    return new DateType('unknow');
+    return new DataType('unknow');
   }
-  return new DateType('time');
+  return new DataType('time');
 };
 
-export const TIMEVALUE = (...args: DateType[]) => {
+export const TIMEVALUE = (...args: DataType[]) => {
   if (args.length !== 1) {
-    return new DateType('unknow');
+    return new DataType('unknow');
   }
   if (args[0].inTypes(['string', 'date', 'datetime', 'timestamp'])) {
-    return new DateType('number');
+    return new DataType('number');
   }
-  return new DateType('unknow');
+  return new DataType('unknow');
 };
 
-export const WEEKNUM = (...args: DateType[]) => {
+export const WEEKNUM = (...args: DataType[]) => {
   if (args.length !== 2) {
-    return new DateType('unknow');
+    return new DataType('unknow');
   }
-  return new DateType('integer');
+  return new DataType('integer');
 };

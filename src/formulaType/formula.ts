@@ -13,9 +13,9 @@ import {
   NOW,
 } from './date';
 import { SUM, MAX } from './math';
-import { DateType } from './DateType';
+import { DataType } from './DateType';
 
-export const formulaType: Record<string, (...args: any) => DateType> = {
+export const formulaType: Record<string, (...args: any) => DataType> = {
   DATE,
   DATEVALUE,
   DAY,
