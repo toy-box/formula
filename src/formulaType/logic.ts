@@ -35,3 +35,10 @@ export const SWITCH = (...args: DataType[]) => {
   isDefault && types.push(args[args.length - 1]);
   return uniDataTypes(...types);
 };
+
+export const ISBLANK = (...args: DataType[]) => {
+  if (args.length !== 1) {
+    return new DataType('unknow');
+  }
+  return new DataType('boolean');
+};

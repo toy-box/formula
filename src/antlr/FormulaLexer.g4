@@ -82,7 +82,8 @@ FunctionLiteral:
 	| 'SPLIT'
 	| 'SUBSTITUTE'
 	| 'TRIM'
-	| 'UPPER';
+	| 'UPPER'
+	| 'ISBLANK';
 
 /// Numeric Literals
 DecimalLiteral:

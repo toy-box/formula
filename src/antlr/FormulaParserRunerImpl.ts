@@ -1,4 +1,4 @@
-import formulajs, { FormulaType } from '@formulajs/formulajs';
+import { FormulaType } from '@formulajs/formulajs';
 import {
   AdditiveExpressionContext,
   ArgumentContext,
@@ -17,6 +17,7 @@ import {
 import { ParserException } from './ParserException';
 import { ParseResult } from './types';
 import { FormulaParserRuner } from './FormulaParserRuner';
+import { formulaPlus } from '../formula';
 
 declare type FieldValueGet = (pattern: string) => any;
 
@@ -63,9 +64,9 @@ export class FormulaParserRunerImpl implements FormulaParserRuner {
 
   exitFunction(ctx: FunctionContext) {
     const args = this.parserMap.get(ctx.getChild(1)) as number[];
-    const fn = formulajs[ctx.getChild(0).text.toUpperCase() as FormulaType] as (
-      ...args: any[]
-    ) => any;
+    const fn = formulaPlus[
+      ctx.getChild(0).text.toUpperCase() as FormulaType
+    ] as (...args: any[]) => any;
     if (fn == null) {
       this.parseException = new ParserException('function not exists');
       this.parseResult = {
