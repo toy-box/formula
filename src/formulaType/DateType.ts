@@ -1,4 +1,4 @@
-import { IDataType, TYPE } from './types';
+import { IDataType, TYPE, TYPES } from './types';
 
 const makeType = (type: TYPE | IDataType) => {
   if (typeof type === 'string') {
@@ -23,9 +23,11 @@ export class DataType {
     return this.types;
   }
 
-  checkArrayType(itemType: string) {
-    return this.types.every(
-      (t) => t.type === 'array' && t.itemType === itemType,
+  checkArrayType(itemTypes: TYPES) {
+    const types = Array.isArray(itemTypes) ? itemTypes : [itemTypes];
+    return (
+      this.isArray &&
+      this.types.every((t) => t.itemType != null && types.includes(t.itemType))
     );
   }
 
@@ -60,6 +62,6 @@ export class DataType {
   }
 
   get isArray() {
-    return this.types.every((t) => ['array'].includes(t.type));
+    return this.types.every((t) => t.type === 'array');
   }
 }

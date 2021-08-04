@@ -148,8 +148,12 @@ export const TRIM = (...args: DataType[]) => {
   return new DataType('unknow');
 };
 
-export const TRIM = (...args: DataType[]) => {
-  if (args.length === 1 && args[0].isTextLike) {
+export const INCLUDES = (...args: DataType[]) => {
+  if (
+    args.length === 2 &&
+    args[1].isTextLike &&
+    args[0].checkArrayType('string')
+  ) {
     return new DataType('string');
   }
   return new DataType('unknow');

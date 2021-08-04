@@ -83,7 +83,8 @@ FunctionLiteral:
 	| 'SUBSTITUTE'
 	| 'TRIM'
 	| 'UPPER'
-	| 'ISBLANK';
+	| 'ISBLANK'
+	| 'INCLUDES';
 
 /// Numeric Literals
 DecimalLiteral:
