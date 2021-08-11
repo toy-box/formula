@@ -9,6 +9,7 @@ import {
   FunctionContext,
   FunctionExpressionContext,
   MultiplicativeExpressionContext,
+  ParenthesizedExpressionContext,
   SingleExpressionContext,
   StatContext,
   StringLiteralExpressionContext,
@@ -112,6 +113,10 @@ export class FormulaParserRunerImpl implements FormulaParserRuner {
     const left = this.parserMap.get(ctx.getChild(0));
     const right = this.parserMap.get(ctx.getChild(2));
     this.parserMap.set(ctx, op === '*' ? left * right : left / right);
+  }
+
+  exitParenthesizedExpression(ctx: ParenthesizedExpressionContext) {
+    this.parserMap.set(ctx, this.parserMap.get(ctx.getChild(1)));
   }
 
   exitStat(ctx: StatContext) {

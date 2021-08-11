@@ -9,6 +9,7 @@ import { VariableExpressionContext } from './FormulaParser';
 import { MultiplicativeExpressionContext } from './FormulaParser';
 import { AdditiveExpressionContext } from './FormulaParser';
 import { FunctionExpressionContext } from './FormulaParser';
+import { ParenthesizedExpressionContext } from './FormulaParser';
 import { StatContext } from './FormulaParser';
 import { ArgumentsContext } from './FormulaParser';
 import { ArgumentListContext } from './FormulaParser';
@@ -118,6 +119,19 @@ export interface FormulaParserListener extends ParseTreeListener {
    * @param ctx the parse tree
    */
   exitFunctionExpression?: (ctx: FunctionExpressionContext) => void;
+
+  /**
+   * Enter a parse tree produced by the `ParenthesizedExpression`
+   * labeled alternative in `FormulaParser.singleExpression`.
+   * @param ctx the parse tree
+   */
+  enterParenthesizedExpression?: (ctx: ParenthesizedExpressionContext) => void;
+  /**
+   * Exit a parse tree produced by the `ParenthesizedExpression`
+   * labeled alternative in `FormulaParser.singleExpression`.
+   * @param ctx the parse tree
+   */
+  exitParenthesizedExpression?: (ctx: ParenthesizedExpressionContext) => void;
 
   /**
    * Enter a parse tree produced by `FormulaParser.stat`.

@@ -8,6 +8,7 @@ import {
   FunctionContext,
   FunctionExpressionContext,
   MultiplicativeExpressionContext,
+  ParenthesizedExpressionContext,
   SingleExpressionContext,
   StatContext,
   StringLiteralExpressionContext,
@@ -120,6 +121,10 @@ export class FormulaParserCheckerImpl implements FormulaParserChecker {
         result: new DataType('unknow'),
       };
     }
+  }
+
+  exitParenthesizedExpression(ctx: ParenthesizedExpressionContext) {
+    this.parserMap.set(ctx, this.parserMap.get(ctx.getChild(1)));
   }
 
   exitStat(ctx: StatContext) {

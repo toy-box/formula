@@ -26,4 +26,5 @@ singleExpression:
 	| singleExpression ('*' | '/') singleExpression	# MultiplicativeExpression
 	| singleExpression ('+' | '-') singleExpression	# AdditiveExpression
 	| function																			# FunctionExpression
+	| '(' singleExpression ')'                      # ParenthesizedExpression
 ;
