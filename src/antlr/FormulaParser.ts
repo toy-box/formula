@@ -34,12 +34,19 @@ export class FormulaParser extends Parser {
   public static readonly Minus = 7;
   public static readonly Multiply = 8;
   public static readonly Divide = 9;
-  public static readonly BooleanLiteral = 10;
-  public static readonly FieldLiteral = 11;
-  public static readonly FunctionLiteral = 12;
-  public static readonly DecimalLiteral = 13;
-  public static readonly StringLiteral = 14;
-  public static readonly WhiteSpaces = 15;
+  public static readonly EQ = 10;
+  public static readonly NE = 11;
+  public static readonly GT = 12;
+  public static readonly GTE = 13;
+  public static readonly LT = 14;
+  public static readonly LTE = 15;
+  public static readonly Connect = 16;
+  public static readonly BooleanLiteral = 17;
+  public static readonly FieldLiteral = 18;
+  public static readonly FunctionLiteral = 19;
+  public static readonly DecimalLiteral = 20;
+  public static readonly StringLiteral = 21;
+  public static readonly WhiteSpaces = 22;
   public static readonly RULE_stat = 0;
   public static readonly RULE_arguments = 1;
   public static readonly RULE_argumentList = 2;
@@ -69,6 +76,13 @@ export class FormulaParser extends Parser {
     "'-'",
     "'*'",
     "'/'",
+    "'='",
+    "'!='",
+    "'>'",
+    "'>='",
+    "'<'",
+    "'<='",
+    "'_'",
   ];
   private static readonly _SYMBOLIC_NAMES: Array<string | undefined> = [
     undefined,
@@ -81,6 +95,13 @@ export class FormulaParser extends Parser {
     'Minus',
     'Multiply',
     'Divide',
+    'EQ',
+    'NE',
+    'GT',
+    'GTE',
+    'LT',
+    'LTE',
+    'Connect',
     'BooleanLiteral',
     'FieldLiteral',
     'FunctionLiteral',
@@ -392,33 +413,33 @@ export class FormulaParser extends Parser {
               this.variable();
             }
             break;
-          case FormulaParser.FunctionLiteral:
-            {
-              _localctx = new FunctionExpressionContext(_localctx);
-              this._ctx = _localctx;
-              _prevctx = _localctx;
-              this.state = 45;
-              this.function();
-            }
-            break;
           case FormulaParser.OpenParen:
             {
               _localctx = new ParenthesizedExpressionContext(_localctx);
               this._ctx = _localctx;
               _prevctx = _localctx;
-              this.state = 46;
+              this.state = 45;
               this.match(FormulaParser.OpenParen);
-              this.state = 47;
+              this.state = 46;
               this.singleExpression(0);
-              this.state = 48;
+              this.state = 47;
               this.match(FormulaParser.CloseParen);
+            }
+            break;
+          case FormulaParser.FunctionLiteral:
+            {
+              _localctx = new FunctionExpressionContext(_localctx);
+              this._ctx = _localctx;
+              _prevctx = _localctx;
+              this.state = 49;
+              this.function();
             }
             break;
           default:
             throw new NoViableAltException(this);
         }
         this._ctx._stop = this._input.tryLT(-1);
-        this.state = 60;
+        this.state = 63;
         this._errHandler.sync(this);
         _alt = this.interpreter.adaptivePredict(this._input, 5, this._ctx);
         while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
@@ -428,7 +449,7 @@ export class FormulaParser extends Parser {
             }
             _prevctx = _localctx;
             {
-              this.state = 58;
+              this.state = 61;
               this._errHandler.sync(this);
               switch (
                 this.interpreter.adaptivePredict(this._input, 4, this._ctx)
@@ -450,6 +471,8 @@ export class FormulaParser extends Parser {
                       );
                     }
                     this.state = 53;
+                    (_localctx as MultiplicativeExpressionContext)._op =
+                      this._input.LT(1);
                     _la = this._input.LA(1);
                     if (
                       !(
@@ -457,7 +480,8 @@ export class FormulaParser extends Parser {
                         _la === FormulaParser.Divide
                       )
                     ) {
-                      this._errHandler.recoverInline(this);
+                      (_localctx as MultiplicativeExpressionContext)._op =
+                        this._errHandler.recoverInline(this);
                     } else {
                       if (this._input.LA(1) === Token.EOF) {
                         this.matchedEOF = true;
@@ -488,6 +512,8 @@ export class FormulaParser extends Parser {
                       );
                     }
                     this.state = 56;
+                    (_localctx as AdditiveExpressionContext)._op =
+                      this._input.LT(1);
                     _la = this._input.LA(1);
                     if (
                       !(
@@ -495,7 +521,8 @@ export class FormulaParser extends Parser {
                         _la === FormulaParser.Minus
                       )
                     ) {
-                      this._errHandler.recoverInline(this);
+                      (_localctx as AdditiveExpressionContext)._op =
+                        this._errHandler.recoverInline(this);
                     } else {
                       if (this._input.LA(1) === Token.EOF) {
                         this.matchedEOF = true;
@@ -508,10 +535,58 @@ export class FormulaParser extends Parser {
                     this.singleExpression(4);
                   }
                   break;
+
+                case 3:
+                  {
+                    _localctx = new CompareExpressionContext(
+                      new SingleExpressionContext(_parentctx, _parentState),
+                    );
+                    this.pushNewRecursionContext(
+                      _localctx,
+                      _startState,
+                      FormulaParser.RULE_singleExpression,
+                    );
+                    this.state = 58;
+                    if (!this.precpred(this._ctx, 2)) {
+                      throw this.createFailedPredicateException(
+                        'this.precpred(this._ctx, 2)',
+                      );
+                    }
+                    this.state = 59;
+                    (_localctx as CompareExpressionContext)._cmp =
+                      this._input.LT(1);
+                    _la = this._input.LA(1);
+                    if (
+                      !(
+                        (_la & ~0x1f) === 0 &&
+                        ((1 << _la) &
+                          ((1 << FormulaParser.EQ) |
+                            (1 << FormulaParser.NE) |
+                            (1 << FormulaParser.GT) |
+                            (1 << FormulaParser.GTE) |
+                            (1 << FormulaParser.LT) |
+                            (1 << FormulaParser.LTE))) !==
+                          0
+                      )
+                    ) {
+                      (_localctx as CompareExpressionContext)._cmp =
+                        this._errHandler.recoverInline(this);
+                    } else {
+                      if (this._input.LA(1) === Token.EOF) {
+                        this.matchedEOF = true;
+                      }
+
+                      this._errHandler.reportMatch(this);
+                      this.consume();
+                    }
+                    this.state = 60;
+                    this.singleExpression(3);
+                  }
+                  break;
               }
             }
           }
-          this.state = 62;
+          this.state = 65;
           this._errHandler.sync(this);
           _alt = this.interpreter.adaptivePredict(this._input, 5, this._ctx);
         }
@@ -554,39 +629,43 @@ export class FormulaParser extends Parser {
 
       case 1:
         return this.precpred(this._ctx, 3);
+
+      case 2:
+        return this.precpred(this._ctx, 2);
     }
     return true;
   }
 
   public static readonly _serializedATN: string =
-    '\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x11B\x04\x02' +
+    '\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x18E\x04\x02' +
     '\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07' +
     '\t\x07\x04\b\t\b\x03\x02\x03\x02\x03\x03\x03\x03\x03\x03\x05\x03\x16\n' +
     '\x03\x05\x03\x18\n\x03\x03\x03\x03\x03\x03\x04\x03\x04\x03\x04\x07\x04' +
     '\x1F\n\x04\f\x04\x0E\x04"\v\x04\x03\x05\x03\x05\x03\x06\x03\x06\x03\x07' +
     '\x03\x07\x03\x07\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b' +
-    '\x03\b\x05\b5\n\b\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b\x07\b=\n\b\f\b\x0E' +
-    '\b@\v\b\x03\b\x02\x02\x03\x0E\t\x02\x02\x04\x02\x06\x02\b\x02\n\x02\f' +
-    '\x02\x0E\x02\x02\x04\x03\x02\n\v\x03\x02\b\t\x02D\x02\x10\x03\x02\x02' +
-    '\x02\x04\x12\x03\x02\x02\x02\x06\x1B\x03\x02\x02\x02\b#\x03\x02\x02\x02' +
-    "\n%\x03\x02\x02\x02\f'\x03\x02\x02\x02\x0E4\x03\x02\x02\x02\x10\x11\x05" +
-    '\x0E\b\x02\x11\x03\x03\x02\x02\x02\x12\x17\x07\x03\x02\x02\x13\x15\x05' +
-    '\x06\x04\x02\x14\x16\x07\x07\x02\x02\x15\x14\x03\x02\x02\x02\x15\x16\x03' +
-    '\x02\x02\x02\x16\x18\x03\x02\x02\x02\x17\x13\x03\x02\x02\x02\x17\x18\x03' +
-    '\x02\x02\x02\x18\x19\x03\x02\x02\x02\x19\x1A\x07\x04\x02\x02\x1A\x05\x03' +
-    '\x02\x02\x02\x1B \x05\b\x05\x02\x1C\x1D\x07\x07\x02\x02\x1D\x1F\x05\b' +
-    '\x05\x02\x1E\x1C\x03\x02\x02\x02\x1F"\x03\x02\x02\x02 \x1E\x03\x02\x02' +
-    '\x02 !\x03\x02\x02\x02!\x07\x03\x02\x02\x02" \x03\x02\x02\x02#$\x05\x0E' +
-    "\b\x02$\t\x03\x02\x02\x02%&\x07\r\x02\x02&\v\x03\x02\x02\x02'(\x07\x0E" +
-    '\x02\x02()\x05\x04\x03\x02)\r\x03\x02\x02\x02*+\b\b\x01\x02+5\x07\x0F' +
-    '\x02\x02,5\x07\x10\x02\x02-5\x07\f\x02\x02.5\x05\n\x06\x02/5\x05\f\x07' +
-    '\x0201\x07\x03\x02\x0212\x05\x0E\b\x0223\x07\x04\x02\x0235\x03\x02\x02' +
-    '\x024*\x03\x02\x02\x024,\x03\x02\x02\x024-\x03\x02\x02\x024.\x03\x02\x02' +
-    '\x024/\x03\x02\x02\x0240\x03\x02\x02\x025>\x03\x02\x02\x0267\f\x06\x02' +
-    '\x0278\t\x02\x02\x028=\x05\x0E\b\x079:\f\x05\x02\x02:;\t\x03\x02\x02;' +
-    '=\x05\x0E\b\x06<6\x03\x02\x02\x02<9\x03\x02\x02\x02=@\x03\x02\x02\x02' +
-    '><\x03\x02\x02\x02>?\x03\x02\x02\x02?\x0F\x03\x02\x02\x02@>\x03\x02\x02' +
-    '\x02\b\x15\x17 4<>';
+    '\x03\b\x05\b5\n\b\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b\x03' +
+    '\b\x07\b@\n\b\f\b\x0E\bC\v\b\x03\b\x02\x02\x03\x0E\t\x02\x02\x04\x02\x06' +
+    '\x02\b\x02\n\x02\f\x02\x0E\x02\x02\x05\x03\x02\n\v\x03\x02\b\t\x03\x02' +
+    '\f\x11\x02H\x02\x10\x03\x02\x02\x02\x04\x12\x03\x02\x02\x02\x06\x1B\x03' +
+    "\x02\x02\x02\b#\x03\x02\x02\x02\n%\x03\x02\x02\x02\f'\x03\x02\x02\x02" +
+    '\x0E4\x03\x02\x02\x02\x10\x11\x05\x0E\b\x02\x11\x03\x03\x02\x02\x02\x12' +
+    '\x17\x07\x03\x02\x02\x13\x15\x05\x06\x04\x02\x14\x16\x07\x07\x02\x02\x15' +
+    '\x14\x03\x02\x02\x02\x15\x16\x03\x02\x02\x02\x16\x18\x03\x02\x02\x02\x17' +
+    '\x13\x03\x02\x02\x02\x17\x18\x03\x02\x02\x02\x18\x19\x03\x02\x02\x02\x19' +
+    '\x1A\x07\x04\x02\x02\x1A\x05\x03\x02\x02\x02\x1B \x05\b\x05\x02\x1C\x1D' +
+    '\x07\x07\x02\x02\x1D\x1F\x05\b\x05\x02\x1E\x1C\x03\x02\x02\x02\x1F"\x03' +
+    '\x02\x02\x02 \x1E\x03\x02\x02\x02 !\x03\x02\x02\x02!\x07\x03\x02\x02\x02' +
+    '" \x03\x02\x02\x02#$\x05\x0E\b\x02$\t\x03\x02\x02\x02%&\x07\x14\x02\x02' +
+    "&\v\x03\x02\x02\x02'(\x07\x15\x02\x02()\x05\x04\x03\x02)\r\x03\x02\x02" +
+    '\x02*+\b\b\x01\x02+5\x07\x16\x02\x02,5\x07\x17\x02\x02-5\x07\x13\x02\x02' +
+    '.5\x05\n\x06\x02/0\x07\x03\x02\x0201\x05\x0E\b\x0212\x07\x04\x02\x022' +
+    '5\x03\x02\x02\x0235\x05\f\x07\x024*\x03\x02\x02\x024,\x03\x02\x02\x02' +
+    '4-\x03\x02\x02\x024.\x03\x02\x02\x024/\x03\x02\x02\x0243\x03\x02\x02\x02' +
+    '5A\x03\x02\x02\x0267\f\x06\x02\x0278\t\x02\x02\x028@\x05\x0E\b\x079:\f' +
+    '\x05\x02\x02:;\t\x03\x02\x02;@\x05\x0E\b\x06<=\f\x04\x02\x02=>\t\x04\x02' +
+    '\x02>@\x05\x0E\b\x05?6\x03\x02\x02\x02?9\x03\x02\x02\x02?<\x03\x02\x02' +
+    '\x02@C\x03\x02\x02\x02A?\x03\x02\x02\x02AB\x03\x02\x02\x02B\x0F\x03\x02' +
+    '\x02\x02CA\x03\x02\x02\x02\b\x15\x17 4?A';
   public static __ATN: ATN;
   public static get _ATN(): ATN {
     if (!FormulaParser.__ATN) {
@@ -872,7 +951,35 @@ export class VariableExpressionContext extends SingleExpressionContext {
     }
   }
 }
+export class ParenthesizedExpressionContext extends SingleExpressionContext {
+  public OpenParen(): TerminalNode {
+    return this.getToken(FormulaParser.OpenParen, 0);
+  }
+  public singleExpression(): SingleExpressionContext {
+    return this.getRuleContext(0, SingleExpressionContext);
+  }
+  public CloseParen(): TerminalNode {
+    return this.getToken(FormulaParser.CloseParen, 0);
+  }
+  constructor(ctx: SingleExpressionContext) {
+    super(ctx.parent, ctx.invokingState);
+    this.copyFrom(ctx);
+  }
+  // @Override
+  public enterRule(listener: FormulaParserListener): void {
+    if (listener.enterParenthesizedExpression) {
+      listener.enterParenthesizedExpression(this);
+    }
+  }
+  // @Override
+  public exitRule(listener: FormulaParserListener): void {
+    if (listener.exitParenthesizedExpression) {
+      listener.exitParenthesizedExpression(this);
+    }
+  }
+}
 export class MultiplicativeExpressionContext extends SingleExpressionContext {
+  public _op!: Token;
   public singleExpression(): SingleExpressionContext[];
   public singleExpression(i: number): SingleExpressionContext;
   public singleExpression(
@@ -908,6 +1015,7 @@ export class MultiplicativeExpressionContext extends SingleExpressionContext {
   }
 }
 export class AdditiveExpressionContext extends SingleExpressionContext {
+  public _op!: Token;
   public singleExpression(): SingleExpressionContext[];
   public singleExpression(i: number): SingleExpressionContext;
   public singleExpression(
@@ -942,6 +1050,54 @@ export class AdditiveExpressionContext extends SingleExpressionContext {
     }
   }
 }
+export class CompareExpressionContext extends SingleExpressionContext {
+  public _cmp!: Token;
+  public singleExpression(): SingleExpressionContext[];
+  public singleExpression(i: number): SingleExpressionContext;
+  public singleExpression(
+    i?: number,
+  ): SingleExpressionContext | SingleExpressionContext[] {
+    if (i === undefined) {
+      return this.getRuleContexts(SingleExpressionContext);
+    } else {
+      return this.getRuleContext(i, SingleExpressionContext);
+    }
+  }
+  public GT(): TerminalNode | undefined {
+    return this.tryGetToken(FormulaParser.GT, 0);
+  }
+  public GTE(): TerminalNode | undefined {
+    return this.tryGetToken(FormulaParser.GTE, 0);
+  }
+  public LT(): TerminalNode | undefined {
+    return this.tryGetToken(FormulaParser.LT, 0);
+  }
+  public LTE(): TerminalNode | undefined {
+    return this.tryGetToken(FormulaParser.LTE, 0);
+  }
+  public EQ(): TerminalNode | undefined {
+    return this.tryGetToken(FormulaParser.EQ, 0);
+  }
+  public NE(): TerminalNode | undefined {
+    return this.tryGetToken(FormulaParser.NE, 0);
+  }
+  constructor(ctx: SingleExpressionContext) {
+    super(ctx.parent, ctx.invokingState);
+    this.copyFrom(ctx);
+  }
+  // @Override
+  public enterRule(listener: FormulaParserListener): void {
+    if (listener.enterCompareExpression) {
+      listener.enterCompareExpression(this);
+    }
+  }
+  // @Override
+  public exitRule(listener: FormulaParserListener): void {
+    if (listener.exitCompareExpression) {
+      listener.exitCompareExpression(this);
+    }
+  }
+}
 export class FunctionExpressionContext extends SingleExpressionContext {
   public function(): FunctionContext {
     return this.getRuleContext(0, FunctionContext);
@@ -960,33 +1116,6 @@ export class FunctionExpressionContext extends SingleExpressionContext {
   public exitRule(listener: FormulaParserListener): void {
     if (listener.exitFunctionExpression) {
       listener.exitFunctionExpression(this);
-    }
-  }
-}
-export class ParenthesizedExpressionContext extends SingleExpressionContext {
-  public OpenParen(): TerminalNode {
-    return this.getToken(FormulaParser.OpenParen, 0);
-  }
-  public singleExpression(): SingleExpressionContext {
-    return this.getRuleContext(0, SingleExpressionContext);
-  }
-  public CloseParen(): TerminalNode {
-    return this.getToken(FormulaParser.CloseParen, 0);
-  }
-  constructor(ctx: SingleExpressionContext) {
-    super(ctx.parent, ctx.invokingState);
-    this.copyFrom(ctx);
-  }
-  // @Override
-  public enterRule(listener: FormulaParserListener): void {
-    if (listener.enterParenthesizedExpression) {
-      listener.enterParenthesizedExpression(this);
-    }
-  }
-  // @Override
-  public exitRule(listener: FormulaParserListener): void {
-    if (listener.exitParenthesizedExpression) {
-      listener.exitParenthesizedExpression(this);
     }
   }
 }

@@ -13,6 +13,13 @@ Plus: '+';
 Minus: '-';
 Multiply: '*';
 Divide: '/';
+EQ: '=';
+NE: '!=';
+GT: '>';
+GTE: '>=';
+LT: '<';
+LTE: '<=';
+Connect: '_';
 
 /// Boolean Literals
 BooleanLiteral: 'true' | 'false';

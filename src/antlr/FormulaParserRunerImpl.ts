@@ -14,6 +14,7 @@ import {
   StatContext,
   StringLiteralExpressionContext,
   VariableExpressionContext,
+  CompareExpressionContext,
 } from './FormulaParser';
 import { ParserException } from './ParserException';
 import { ParseResult } from './types';
@@ -113,6 +114,28 @@ export class FormulaParserRunerImpl implements FormulaParserRuner {
     const left = this.parserMap.get(ctx.getChild(0));
     const right = this.parserMap.get(ctx.getChild(2));
     this.parserMap.set(ctx, op === '*' ? left * right : left / right);
+  }
+
+  exitCompareExpression(ctx: CompareExpressionContext) {
+    const op = ctx.getChild(1).text;
+    const left = this.parserMap.get(ctx.getChild(0));
+    const right = this.parserMap.get(ctx.getChild(2));
+    switch (op) {
+      case '=':
+        return this.parserMap.set(ctx, left === right);
+      case '<>':
+        return this.parserMap.set(ctx, left !== right);
+      case '>':
+        return this.parserMap.set(ctx, left > right);
+      case '>=':
+        return this.parserMap.set(ctx, left >= right);
+      case '<':
+        return this.parserMap.set(ctx, left < right);
+      case '<=':
+        return this.parserMap.set(ctx, left <= right);
+      default:
+        return this.parserMap.set(ctx, false);
+    }
   }
 
   exitParenthesizedExpression(ctx: ParenthesizedExpressionContext) {

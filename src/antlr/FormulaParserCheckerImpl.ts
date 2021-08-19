@@ -13,6 +13,7 @@ import {
   StatContext,
   StringLiteralExpressionContext,
   VariableExpressionContext,
+  CompareExpressionContext,
 } from './FormulaParser';
 import { FormulaParserChecker } from './FormulaParserChecker';
 import { ParserException } from './ParserException';
@@ -121,6 +122,10 @@ export class FormulaParserCheckerImpl implements FormulaParserChecker {
         result: new DataType('unknow'),
       };
     }
+  }
+
+  exitCompareExpression(ctx: CompareExpressionContext) {
+    this.parserMap.set(ctx, new DataType('boolean'));
   }
 
   exitParenthesizedExpression(ctx: ParenthesizedExpressionContext) {

@@ -23,8 +23,9 @@ singleExpression:
 	| StringLiteral																	# StringLiteralExpression
 	| BooleanLiteral																# BooleanLiteralExpression
 	| variable																			# VariableExpression
-	| singleExpression ('*' | '/') singleExpression	# MultiplicativeExpression
-	| singleExpression ('+' | '-') singleExpression	# AdditiveExpression
-	| function																			# FunctionExpression
 	| '(' singleExpression ')'                      # ParenthesizedExpression
+	| singleExpression op=(Multiply | Divide) singleExpression	 # MultiplicativeExpression
+	| singleExpression op=(Plus | Minus) singleExpression	 # AdditiveExpression
+	| singleExpression cmp=(GT | GTE | LT | LTE | EQ | NE) singleExpression # CompareExpression
+	| function										 									# FunctionExpression
 ;
