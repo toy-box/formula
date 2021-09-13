@@ -18,7 +18,7 @@ import {
 import { FormulaParserChecker } from './FormulaParserChecker';
 import { ParserException } from './ParserException';
 import { ParseType } from './types';
-import { formulaType, TYPES } from '../formulaType';
+import { formulaType, TYPES, TYPE } from '../formulaType';
 import { DataType } from '@/formulaType/DateType';
 
 declare type FieldTypeGet = (pattern: string) => DataType;
@@ -33,20 +33,20 @@ export class FormulaParserCheckerImpl implements FormulaParserChecker {
     this.getFieldType = getFieldType;
     this.parseType = {
       success: false,
-      result: new DataType('unknow'),
+      result: new DataType(TYPE.UNKNOW),
     };
   }
 
   exitBooleanLiteralExpression(ctx: BooleanLiteralExpressionContext) {
-    this.parserMap.set(ctx, new DataType('boolean'));
+    this.parserMap.set(ctx, new DataType(TYPE.BOOLEAN));
   }
 
   exitDecimalLiteralExpression(ctx: DecimalLiteralExpressionContext) {
-    this.parserMap.set(ctx, new DataType('number'));
+    this.parserMap.set(ctx, new DataType(TYPE.NUMBER));
   }
 
   exitStringLiteralExpression(ctx: StringLiteralExpressionContext) {
-    this.parserMap.set(ctx, new DataType('string'));
+    this.parserMap.set(ctx, new DataType(TYPE.STRING));
   }
 
   exitVariableExpression(ctx: VariableExpressionContext) {
@@ -63,9 +63,9 @@ export class FormulaParserCheckerImpl implements FormulaParserChecker {
       this.parseException = new ParserException('function not exists');
       this.parseType = {
         success: false,
-        result: new DataType('unknow'),
+        result: new DataType(TYPE.UNKNOW),
       };
-      this.parserMap.set(ctx, new DataType('unknow'));
+      this.parserMap.set(ctx, new DataType(TYPE.UNKNOW));
     } else {
       this.parserMap.set(ctx, fn(...args));
     }
@@ -97,35 +97,34 @@ export class FormulaParserCheckerImpl implements FormulaParserChecker {
     const left = this.parserMap.get(ctx.getChild(0)) as DataType;
     const right = this.parserMap.get(ctx.getChild(2)) as DataType;
     if (left.isDecimalLike && right.isDecimalLike) {
-      this.parserMap.set(ctx, new DataType('number'));
+      this.parserMap.set(ctx, new DataType(TYPE.NUMBER));
     } else {
       this.parseException = new ParserException('additive expression error');
       this.parseType = {
         success: false,
-        result: new DataType('unknow'),
+        result: new DataType(TYPE.UNKNOW),
       };
     }
   }
 
   exitMultiplicativeExpression(ctx: MultiplicativeExpressionContext) {
-    const op = ctx.getChild(1).text;
     const left = this.parserMap.get(ctx.getChild(0)) as DataType;
     const right = this.parserMap.get(ctx.getChild(2)) as DataType;
     if (left.isDecimalLike && right.isDecimalLike) {
-      this.parserMap.set(ctx, new DataType('number'));
+      this.parserMap.set(ctx, new DataType(TYPE.NUMBER));
     } else {
       this.parseException = new ParserException(
         'multiplicative expression error',
       );
       this.parseType = {
         success: false,
-        result: new DataType('unknow'),
+        result: new DataType(TYPE.UNKNOW),
       };
     }
   }
 
   exitCompareExpression(ctx: CompareExpressionContext) {
-    this.parserMap.set(ctx, new DataType('boolean'));
+    this.parserMap.set(ctx, new DataType(TYPE.BOOLEAN));
   }
 
   exitParenthesizedExpression(ctx: ParenthesizedExpressionContext) {
@@ -136,7 +135,7 @@ export class FormulaParserCheckerImpl implements FormulaParserChecker {
     if (this.parseException) {
       this.parseType = {
         success: false,
-        result: new DataType('unknow'),
+        result: new DataType(TYPE.UNKNOW),
       };
     } else {
       this.parseType = {

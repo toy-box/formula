@@ -1,4 +1,5 @@
 import { DataType } from './DateType';
+import { TYPE } from './types';
 
 const isNullOrNumber = (arg: DataType) => {
   return arg == null || arg.isDecimalLike;
@@ -6,18 +7,18 @@ const isNullOrNumber = (arg: DataType) => {
 
 const numbersToNumber = (...args: DataType[]) => {
   if (args.length === 0) {
-    return new DataType('unknow');
+    return new DataType(TYPE.UNKNOW);
   }
   return args.every((arg) => arg.isDecimalLike)
-    ? new DataType('number')
-    : new DataType('unknow');
+    ? new DataType(TYPE.NUMBER)
+    : new DataType(TYPE.UNKNOW);
 };
 
 const oneNumberToNumber = (...args: DataType[]) => {
   if (args.length === 1 && args[0].isDecimalLike) {
-    return new DataType('number');
+    return new DataType(TYPE.NUMBER);
   }
-  return new DataType('unknow');
+  return new DataType(TYPE.UNKNOW);
 };
 
 const twoNumberOpt1ToNumber = (...args: DataType[]) => {
@@ -27,16 +28,16 @@ const twoNumberOpt1ToNumber = (...args: DataType[]) => {
     args[0].isDecimalLike &&
     isNullOrNumber(args[1])
   ) {
-    return new DataType('number');
+    return new DataType(TYPE.NUMBER);
   }
-  return new DataType('unknow');
+  return new DataType(TYPE.UNKNOW);
 };
 
 const twoNumberToNumber = (...args: DataType[]) => {
   if (args.length === 2 && args[0].isDecimalLike && args[1].isDecimalLike) {
-    return new DataType('number');
+    return new DataType(TYPE.NUMBER);
   }
-  return new DataType('unknow');
+  return new DataType(TYPE.UNKNOW);
 };
 
 const threeNumberToNumber = (...args: DataType[]) => {
@@ -46,9 +47,9 @@ const threeNumberToNumber = (...args: DataType[]) => {
     args[1].isDecimalLike &&
     args[2].isDecimalLike
   ) {
-    return new DataType('number');
+    return new DataType(TYPE.NUMBER);
   }
-  return new DataType('unknow');
+  return new DataType(TYPE.UNKNOW);
 };
 
 const threeNumberOpt2ToNumber = (...args: DataType[]) => {
@@ -59,9 +60,9 @@ const threeNumberOpt2ToNumber = (...args: DataType[]) => {
     isNullOrNumber(args[1]) &&
     isNullOrNumber(args[2])
   ) {
-    return new DataType('number');
+    return new DataType(TYPE.NUMBER);
   }
-  return new DataType('unknow');
+  return new DataType(TYPE.UNKNOW);
 };
 
 export const CEILING = twoNumberToNumber;
@@ -83,17 +84,17 @@ export const SUM = numbersToNumber;
 export const ABS = oneNumberToNumber;
 
 export const COUNT = (...args: DataType[]) => {
-  return new DataType('integer');
+  return new DataType(TYPE.NUMBER);
 };
 
 export const COUNTA = (...args: DataType[]) => {
-  return new DataType('integer');
+  return new DataType(TYPE.NUMBER);
 };
 
 export const POWER = twoNumberToNumber;
 
 export const AVERAGE = (...args: DataType[]) => {
-  return new DataType('number');
+  return new DataType(TYPE.NUMBER);
 };
 
 export const LN = oneNumberToNumber;

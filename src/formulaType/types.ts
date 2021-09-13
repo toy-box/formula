@@ -1,4 +1,4 @@
-export type TYPE =
+export type META_TYPE =
   | 'string'
   | 'text'
   | 'number'
@@ -11,6 +11,17 @@ export type TYPE =
   | 'array'
   | 'object'
   | 'unknow';
+
+export enum TYPE {
+  STRING = 'string',
+  NUMBER = 'number',
+  DATE = 'date',
+  TIME = 'time',
+  BOOLEAN = 'boolean',
+  OBJECT = 'object',
+  ARRAY = 'array',
+  UNKNOW = 'unknow',
+}
 
 export type TYPES = TYPE | TYPE[];
 

@@ -1,6 +1,6 @@
 {
   "name": "@toy-box/formula",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@formulajs/formulajs": "^2.6.9",
+    "@toy-box/meta-schema": "^2.0.3",
     "@types/lodash.uniq": "^4.5.6",
     "antlr4ts": "^0.5.0-alpha.4",
     "lodash.uniq": "^4.5.0"

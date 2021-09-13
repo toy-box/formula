@@ -1,3 +1,4 @@
+import { MetaValueType } from '@toy-box/meta-schema';
 import { IDataType, TYPE, TYPES } from './types';
 
 const makeType = (type: TYPE | IDataType) => {
@@ -65,3 +66,30 @@ export class DataType {
     return this.types.every((t) => t.type === 'array');
   }
 }
+
+export const fromMetaType = (type: MetaValueType) => {
+  switch (type) {
+    case MetaValueType.STRING:
+    case MetaValueType.TEXT:
+      return new DataType(TYPE.STRING);
+    case MetaValueType.INTEGER:
+    case MetaValueType.NUMBER:
+    case MetaValueType.PERCENT:
+    case MetaValueType.RATE:
+      return new DataType(TYPE.NUMBER);
+    case MetaValueType.DATE:
+    case MetaValueType.DATETIME:
+    case MetaValueType.TIMESTAMP:
+      return new DataType(TYPE.DATE);
+    case MetaValueType.BOOLEAN:
+      return new DataType(TYPE.BOOLEAN);
+    case MetaValueType.MULTI_OPTION:
+      return new DataType(TYPE.ARRAY);
+    case MetaValueType.SINGLE_OPTION:
+      return new DataType(TYPE.STRING);
+    case MetaValueType.OBJECT_ID:
+      return new DataType(TYPE.STRING);
+    default:
+      return new DataType(TYPE.UNKNOW);
+  }
+};
