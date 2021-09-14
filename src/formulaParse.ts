@@ -29,7 +29,7 @@ export function formulaParse(
 }
 
 export function formulaParseType(
-  formula: string,
+  formula: string = '',
   getFieldType: (pattern: string) => DataType,
 ) {
   const chars = CharStreams.fromString(formula);
