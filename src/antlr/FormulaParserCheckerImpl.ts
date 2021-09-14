@@ -18,8 +18,7 @@ import {
 import { FormulaParserChecker } from './FormulaParserChecker';
 import { ParserException } from './ParserException';
 import { ParseType } from './types';
-import { formulaType, TYPES, TYPE } from '../formulaType';
-import { DataType } from '@/formulaType/DateType';
+import { formulaType, DataType, TYPE } from '../formulaType';
 
 declare type FieldTypeGet = (pattern: string) => DataType;
 

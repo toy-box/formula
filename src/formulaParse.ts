@@ -13,7 +13,7 @@ import { DataType } from './formulaType/DateType';
 
 export function formulaParse(
   formula: string,
-  getFieldValue: (pattern: string) => any,
+  getFieldValue: (pattern: string) => any = (pattern: string) => undefined,
 ) {
   const chars = CharStreams.fromString(formula);
   const lexer = new FormulaLexer(chars);

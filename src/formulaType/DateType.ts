@@ -41,29 +41,27 @@ export class DataType {
   }
 
   get isUnknow() {
-    return this.types.find((t) => t.type === 'unknow');
+    return this.types.find((t) => t.type === TYPE.UNKNOW);
   }
 
   get isDecimalLike() {
-    return this.types.every((t) => ['number', 'integer'].includes(t.type));
+    return this.types.every((t) => t.type === TYPE.NUMBER);
   }
 
   get isTextLike() {
-    return this.types.every((t) => ['string', 'text'].includes(t.type));
+    return this.types.every((t) => t.type === TYPE.STRING);
   }
 
   get isBoolean() {
-    return this.types.every((t) => ['boolean'].includes(t.type));
+    return this.types.every((t) => t.type === TYPE.BOOLEAN);
   }
 
   get isDateLike() {
-    return this.types.every((t) =>
-      ['date', 'datetime', 'timestamp'].includes(t.type),
-    );
+    return this.types.every((t) => t.type === TYPE.DATE);
   }
 
   get isArray() {
-    return this.types.every((t) => t.type === 'array');
+    return this.types.every((t) => t.type === TYPE.ARRAY);
   }
 }
 
