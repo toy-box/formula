@@ -1,4 +1,5 @@
-import { formulaParse } from '../index';
+import { formulaParse, formulaParseType } from '../index';
+import { DataType, TYPE } from '../formulaType';
 
 test('run 1 + 2 to equal 3', () => {
   expect(formulaParse('1+2').result).toBe(3);
@@ -16,4 +17,11 @@ test('concat {!first} and " " and {!last} to equal "{!first} {!last}"', () => {
   expect(
     formulaParse('CONCATENATE({!first}, " ", {!last})', (path) => path).result,
   ).toBe('{!first} {!last}');
+});
+
+test('123 type is number', () => {
+  expect(
+    formulaParseType('123', (path) => new DataType(TYPE.UNKNOW)).result
+      .isDecimalLike,
+  ).toBe(true);
 });

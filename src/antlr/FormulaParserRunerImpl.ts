@@ -48,7 +48,6 @@ export class FormulaParserRunerImpl implements FormulaParserRuner {
   }
 
   exitStringLiteralExpression(ctx: StringLiteralExpressionContext) {
-    console.log('exitStringLiteralExpression', ctx.StringLiteral());
     this.parserMap.set(
       ctx,
       ctx
