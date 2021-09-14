@@ -41,7 +41,7 @@ export class DataType {
   }
 
   get isUnknow() {
-    return this.types.find((t) => t.type === TYPE.UNKNOW);
+    return this.types.some((t) => t.type === TYPE.UNKNOW);
   }
 
   get isDecimalLike() {
