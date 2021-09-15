@@ -11,8 +11,6 @@ import { AdditiveExpressionContext } from './FormulaParser';
 import { ParenthesizedExpressionContext } from './FormulaParser';
 import { FunctionExpressionContext } from './FormulaParser';
 import { StatContext } from './FormulaParser';
-import { ExpressionStatementContext } from './FormulaParser';
-import { ExpressionSequenceContext } from './FormulaParser';
 import { ArgumentsContext } from './FormulaParser';
 import { ArgumentListContext } from './FormulaParser';
 import { ArgumentContext } from './FormulaParser';
@@ -108,20 +106,6 @@ export interface FormulaParserVisitor<Result> extends ParseTreeVisitor<Result> {
    * @return the visitor result
    */
   visitStat?: (ctx: StatContext) => Result;
-
-  /**
-   * Visit a parse tree produced by `FormulaParser.expressionStatement`.
-   * @param ctx the parse tree
-   * @return the visitor result
-   */
-  visitExpressionStatement?: (ctx: ExpressionStatementContext) => Result;
-
-  /**
-   * Visit a parse tree produced by `FormulaParser.expressionSequence`.
-   * @param ctx the parse tree
-   * @return the visitor result
-   */
-  visitExpressionSequence?: (ctx: ExpressionSequenceContext) => Result;
 
   /**
    * Visit a parse tree produced by `FormulaParser.arguments`.

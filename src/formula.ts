@@ -1,4 +1,4 @@
-import formulajs, { FormulaType } from '@formulajs/formulajs';
+import formulajs from '@formulajs/formulajs';
 
 const ISBLANK = (value: any) => value == null || value === '';
 

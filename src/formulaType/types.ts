@@ -21,6 +21,7 @@ export enum TYPE {
   OBJECT = 'object',
   ARRAY = 'array',
   UNKNOW = 'unknow',
+  NULL = 'null',
 }
 
 export type TYPES = TYPE | TYPE[];

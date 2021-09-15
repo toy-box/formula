@@ -18,6 +18,12 @@ export function formulaParse(
   formula: string,
   getFieldValue: (pattern: string) => any = (pattern: string) => undefined,
 ) {
+  if (formula === '') {
+    return {
+      success: true,
+      result: null,
+    };
+  }
   const lexerErrors = [];
   const chars = CharStreams.fromString(formula);
   const lexer = new FormulaLexer(chars);
@@ -26,24 +32,37 @@ export function formulaParse(
   const parser = new FormulaParser(tokenStream);
   parser.errorHandler = new BailErrorStrategy();
   parser.buildParseTree = true;
-  const tree = parser.stat();
-  const listener: FormulaParserRuner = new FormulaParserRunerImpl(
-    getFieldValue,
-  );
-  ParseTreeWalker.DEFAULT.walk(listener, tree);
-  if (lexerErrors.length > 0 || parser.numberOfSyntaxErrors > 0) {
+  try {
+    const tree = parser.stat();
+    const listener: FormulaParserRuner = new FormulaParserRunerImpl(
+      getFieldValue,
+    );
+    ParseTreeWalker.DEFAULT.walk(listener, tree);
+    if (lexerErrors.length > 0 || parser.numberOfSyntaxErrors > 0) {
+      return {
+        success: false,
+        result: null,
+      };
+    }
+    return listener.getResult();
+  } catch {
     return {
       success: false,
       result: null,
     };
   }
-  return listener.getResult();
 }
 
 export function formulaParseType(
   formula: string = '',
   getFieldType: (pattern: string) => DataType,
 ) {
+  if (formula === '') {
+    return {
+      success: true,
+      result: new DataType(TYPE.NULL),
+    };
+  }
   const lexerErrors = [];
   const chars = CharStreams.fromString(formula);
   const lexer = new FormulaLexer(chars);
@@ -52,18 +71,25 @@ export function formulaParseType(
   const parser = new FormulaParser(tokenStream);
   parser.errorHandler = new BailErrorStrategy();
   parser.buildParseTree = true;
-  const tree = parser.stat();
-  const listener: FormulaParserChecker = new FormulaParserCheckerImpl(
-    getFieldType,
-  );
-  ParseTreeWalker.DEFAULT.walk(listener, tree);
-  if (lexerErrors.length > 0 || parser.numberOfSyntaxErrors > 0) {
+  try {
+    const tree = parser.stat();
+    const listener: FormulaParserChecker = new FormulaParserCheckerImpl(
+      getFieldType,
+    );
+    ParseTreeWalker.DEFAULT.walk(listener, tree);
+    if (lexerErrors.length > 0 || parser.numberOfSyntaxErrors > 0) {
+      return {
+        success: false,
+        result: new DataType(TYPE.UNKNOW),
+      };
+    }
+    return listener.getType();
+  } catch {
     return {
       success: false,
-      result: new DataType(TYPE.UNKNOW),
+      result: new DataType(TYPE.NULL),
     };
   }
-  return listener.getType();
 }
 
 export function formulaTreeTest(formula: string) {
