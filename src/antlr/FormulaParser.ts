@@ -23,7 +23,6 @@ import { VocabularyImpl } from 'antlr4ts/VocabularyImpl';
 import * as Utils from 'antlr4ts/misc/Utils';
 
 import { FormulaParserListener } from './FormulaParserListener';
-import { ANTLRErrorStrategy } from 'antlr4ts';
 
 export class FormulaParser extends Parser {
   public static readonly OpenParen = 1;

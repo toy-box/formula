@@ -22,8 +22,8 @@ export function formulaParse(
   const chars = CharStreams.fromString(formula);
   const lexer = new FormulaLexer(chars);
   lexer.addErrorListener(new CountErrorListener((e) => lexerErrors.push(e)));
-  const tokens = new CommonTokenStream(lexer);
-  const parser = new FormulaParser(tokens);
+  const tokenStream = new CommonTokenStream(lexer);
+  const parser = new FormulaParser(tokenStream);
   parser.errorHandler = new BailErrorStrategy();
   parser.buildParseTree = true;
   const tree = parser.stat();
@@ -48,8 +48,8 @@ export function formulaParseType(
   const chars = CharStreams.fromString(formula);
   const lexer = new FormulaLexer(chars);
   lexer.addErrorListener(new CountErrorListener((e) => lexerErrors.push(e)));
-  const tokens = new CommonTokenStream(lexer);
-  const parser = new FormulaParser(tokens);
+  const tokenStream = new CommonTokenStream(lexer);
+  const parser = new FormulaParser(tokenStream);
   parser.errorHandler = new BailErrorStrategy();
   parser.buildParseTree = true;
   const tree = parser.stat();

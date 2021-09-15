@@ -4,3 +4,4 @@ export {
   formulaParseType,
   formulaTreeTest,
 } from './formulaParse';
+export * from './formulaType/types';

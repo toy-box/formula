@@ -105,7 +105,7 @@ StringLiteral:
 	| '\'' SingleStringCharacter* '\'';
 
 
-WhiteSpaces: [\t\u000B\u000C\u0020\u00A0]+ -> channel(HIDDEN);
+WhiteSpaces: [\t\r\n\u000B\u000C\u0020\u00A0]+ -> channel(HIDDEN);
 
 /// UnexpectedCharacter: . -> channel(ERROR);
 
