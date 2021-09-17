@@ -149,7 +149,7 @@ fragment LineContinuation: '\\' [\r\n\u2028\u2029];
 
 fragment HexDigit: [0-9a-fA-F];
 
-fragment DecimalIntegerLiteral: '0' | [1-9] [0-9]*;
+fragment DecimalIntegerLiteral: '0' | '-'? [0-9] [0-9]*;
 
 fragment Field: '{!' FieldPathSegment FieldPathSubSegment* '}';
 
