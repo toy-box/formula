@@ -1,16 +1,16 @@
-// Generated from ./src/antlr/FormulaParser.g4 by ANTLR 4.9.0-SNAPSHOT
+// Generated from ./FormulaParser.g4 by ANTLR 4.9.0-SNAPSHOT
 
 import { ParseTreeListener } from 'antlr4ts/tree/ParseTreeListener';
 
 import { DecimalLiteralExpressionContext } from './FormulaParser';
 import { StringLiteralExpressionContext } from './FormulaParser';
 import { BooleanLiteralExpressionContext } from './FormulaParser';
+import { FunctionExpressionContext } from './FormulaParser';
 import { VariableExpressionContext } from './FormulaParser';
 import { ParenthesizedExpressionContext } from './FormulaParser';
 import { MultiplicativeExpressionContext } from './FormulaParser';
 import { AdditiveExpressionContext } from './FormulaParser';
 import { CompareExpressionContext } from './FormulaParser';
-import { FunctionExpressionContext } from './FormulaParser';
 import { StatContext } from './FormulaParser';
 import { ArgumentsContext } from './FormulaParser';
 import { ArgumentListContext } from './FormulaParser';
@@ -66,6 +66,19 @@ export interface FormulaParserListener extends ParseTreeListener {
    * @param ctx the parse tree
    */
   exitBooleanLiteralExpression?: (ctx: BooleanLiteralExpressionContext) => void;
+
+  /**
+   * Enter a parse tree produced by the `FunctionExpression`
+   * labeled alternative in `FormulaParser.singleExpression`.
+   * @param ctx the parse tree
+   */
+  enterFunctionExpression?: (ctx: FunctionExpressionContext) => void;
+  /**
+   * Exit a parse tree produced by the `FunctionExpression`
+   * labeled alternative in `FormulaParser.singleExpression`.
+   * @param ctx the parse tree
+   */
+  exitFunctionExpression?: (ctx: FunctionExpressionContext) => void;
 
   /**
    * Enter a parse tree produced by the `VariableExpression`
@@ -133,19 +146,6 @@ export interface FormulaParserListener extends ParseTreeListener {
    * @param ctx the parse tree
    */
   exitCompareExpression?: (ctx: CompareExpressionContext) => void;
-
-  /**
-   * Enter a parse tree produced by the `FunctionExpression`
-   * labeled alternative in `FormulaParser.singleExpression`.
-   * @param ctx the parse tree
-   */
-  enterFunctionExpression?: (ctx: FunctionExpressionContext) => void;
-  /**
-   * Exit a parse tree produced by the `FunctionExpression`
-   * labeled alternative in `FormulaParser.singleExpression`.
-   * @param ctx the parse tree
-   */
-  exitFunctionExpression?: (ctx: FunctionExpressionContext) => void;
 
   /**
    * Enter a parse tree produced by `FormulaParser.stat`.

@@ -22,10 +22,10 @@ singleExpression:
 	DecimalLiteral																	# DecimalLiteralExpression
 	| StringLiteral																	# StringLiteralExpression
 	| BooleanLiteral																# BooleanLiteralExpression
+	| function										 									# FunctionExpression
 	| variable																			# VariableExpression
 	| '(' singleExpression ')'                      # ParenthesizedExpression
 	| singleExpression op=(Multiply | Divide) singleExpression	 # MultiplicativeExpression
 	| singleExpression op=(Plus | Minus) singleExpression	 # AdditiveExpression
 	| singleExpression cmp=(GT | GTE | LT | LTE | EQ | NE) singleExpression # CompareExpression
-	| function										 									# FunctionExpression
 ;

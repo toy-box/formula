@@ -11,7 +11,7 @@
     "prettier": "prettier --write \"**/*.{js,jsx,tsx,ts,less,md,json}\"",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage",
-    "antlr4ts": "antlr4ts  ./src/antlr/FormulaParser.g4 ./src/antlr/FormulaLexer.g4"
+    "antlr4ts": "antlr4ts  ./FormulaParser.g4 ./FormulaLexer.g4 -o ./src/antlr"
   },
   "main": "dist/index.js",
   "module": "dist/index.esm.js",

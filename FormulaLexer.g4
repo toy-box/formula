@@ -14,22 +14,18 @@ Minus: '-';
 Multiply: '*';
 Divide: '/';
 EQ: '=';
-NE: '!=';
+NE: '<>';
 GT: '>';
 GTE: '>=';
 LT: '<';
 LTE: '<=';
-Connect: '_';
 
 /// Boolean Literals
 BooleanLiteral: 'true' | 'false';
 
-/// Field Literals
-FieldLiteral: Field;
-
 /// Function Literals
 FunctionLiteral:
-	'DATE'
+	'DATE' //日期函数开始
 	| 'DATEVALUE'
 	| 'DAY'
 	| 'DAYS'
@@ -47,18 +43,18 @@ FunctionLiteral:
 	| 'TODAY'
 	| 'WEEKDAY'
 	| 'YEAR'
-	| 'WEEKNUM'
-	| 'AND'
+	| 'WEEKNUM' //日期函数结束
+	| 'AND' //逻辑函数开始
 	| 'IF'
 	| 'NOT'
 	| 'OR'
-	| 'SWITCH'
-  | 'ABS'
+	| 'SWITCH' //逻辑函数结束
+	| 'ABS' //数字函数开始
 	| 'CEILING'
-	| 'CEILINGMATH'
+	| 'CEILINGMATH' //no
 	| 'EXP'
 	| 'FLOOR'
-	| 'FLOORMATH'
+	| 'FLOORMATH' //no
 	| 'LN'
 	| 'LOG'
 	| 'LOG10'
@@ -69,12 +65,12 @@ FunctionLiteral:
 	| 'ROUNDDOWN'
 	| 'ROUNDUP'
 	| 'SQRT'
-	| 'AVERAGE'
+	| 'AVERAGE' //avg
 	| 'SUM'
 	| 'COUNT'
 	| 'COUNTA'
-	| 'POWER'
-	| 'CONCATENATE'
+	| 'POWER' //数字函数结束
+	| 'CONCATENATE' //字符串开始
 	| 'EXACT'
 	| 'FIND'
 	| 'LEFT'
@@ -86,40 +82,42 @@ FunctionLiteral:
 	| 'REPT'
 	| 'RIGHT'
 	| 'SEARCH'
-	| 'SPLIT'
+	| 'SPLIT' //no
 	| 'SUBSTITUTE'
 	| 'TRIM'
-	| 'UPPER'
+	| 'UPPER' //字符串结束
 	| 'ISBLANK'
 	| 'INCLUDES';
 
+/// Field Literals
+FieldLiteral: Field;
+
 /// Numeric Literals
 DecimalLiteral:
-  DecimalIntegerLiteral '.' [0-9]*
-  | '.' [0-9]+
-  | DecimalIntegerLiteral;
+	DecimalIntegerLiteral '.' [0-9]*
+	| '.' [0-9]+
+	| DecimalIntegerLiteral;
 
 /// String Literals
 StringLiteral:
-  '"' DoubleStringCharacter* '"'
+	'"' DoubleStringCharacter* '"'
 	| '\'' SingleStringCharacter* '\'';
 
-
-WhiteSpaces: [\t\r\n\u000B\u000C\u0020\u00A0]+ -> channel(HIDDEN);
+WhiteSpaces: [\t\u000B\u000C\u0020\u00A0]+ -> channel(HIDDEN);
 
 /// UnexpectedCharacter: . -> channel(ERROR);
 
 /// Fragment rules
 
 fragment DoubleStringCharacter:
-  ~["\\\r\n]
-  | '\\' EscapeSequence
-  | LineContinuation;
+	~["\\\r\n]
+	| '\\' EscapeSequence
+	| LineContinuation;
 
 fragment SingleStringCharacter:
-  ~['\\\r\n]
-  | '\\' EscapeSequence
-  | LineContinuation;
+	~['\\\r\n]
+	| '\\' EscapeSequence
+	| LineContinuation;
 
 fragment EscapeSequence:
 	CharacterEscapeSequence
@@ -151,10 +149,17 @@ fragment HexDigit: [0-9a-fA-F];
 
 fragment DecimalIntegerLiteral: '0' | '-'? [0-9] [0-9]*;
 
-fragment Field: '{!' FieldPathSegment FieldPathSubSegment* '}';
+fragment Field:
+	FieldPathSegment FieldPathSubSegment*
+	| FieldPathSegment '[' DecimalIntegerLiteral ']' FieldPathSubSegment*
+	| '$' FieldPathSegment FieldPathSubSegment*
+	| '$' FieldPathSegment '[' DecimalIntegerLiteral ']' FieldPathSubSegment*;
 
 fragment FieldPath: FieldPathSegment FieldPathSubSegment*;
 
-fragment FieldPathSegment: [a-zA-Z] [a-zA-Z0-9_]*;
+fragment FieldPathSegment:
+	[a-zA-Z_][a-zA-Z0-9_]*;
 
-fragment FieldPathSubSegment: '.' FieldPathSegment;
+fragment FieldPathSubSegment:
+	'.' FieldPathSegment
+	| '.' FieldPathSegment '[' DecimalIntegerLiteral ']';

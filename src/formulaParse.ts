@@ -1,18 +1,22 @@
-import { BailErrorStrategy } from 'antlr4ts';
+import { BailErrorStrategy, CharStreams, CommonTokenStream } from 'antlr4ts';
 import {
-  CharStreams,
-  CommonTokenStream,
-  FormulaLexer,
-  FormulaParser,
-  FormulaParserRuner,
-  FormulaParserRunerImpl,
-  ParseTreeWalker,
-} from './antlr';
-import { FormulaParserCheckerImpl } from './antlr/FormulaParserCheckerImpl';
-import { FormulaParserChecker } from './antlr/FormulaParserChecker';
+  FieldTypeGet,
+  FormulaParserCheckerImpl,
+} from './formulaService/FormulaParserCheckerImpl';
+import { FormulaParserChecker } from './formulaService/FormulaParserChecker';
 import { DataType } from './formulaType/DateType';
-import { CountErrorListener } from './antlr/CountErrorListener';
+import { CountErrorListener } from './formulaService/CountErrorListener';
 import { TYPE } from './formulaType';
+import { FormulaLexer } from './antlr/FormulaLexer';
+import { FormulaParser, StatContext } from './antlr/FormulaParser';
+import { FormulaParserRuner } from './formulaService/FormulaParserRuner';
+import { FormulaParserRunerImpl } from './formulaService/FormulaParserRunerImpl';
+import { ParseTreeWalker } from 'antlr4ts/tree/ParseTreeWalker';
+import { ContextResource } from './schemaMap.data';
+import { MetaValueType } from '@toy-box/meta-schema';
+import FormulaErrorListener, {
+  IFormulaError,
+} from './formulaService/FormulaErrorListener';
 
 export function formulaParse(
   formula: string,
@@ -55,41 +59,43 @@ export function formulaParse(
 
 export function formulaParseType(
   formula: string = '',
-  getFieldType: (pattern: string) => DataType,
-) {
-  if (formula === '') {
-    return {
-      success: true,
-      result: new DataType(TYPE.NULL),
-    };
-  }
-  const lexerErrors = [];
-  const chars = CharStreams.fromString(formula);
-  const lexer = new FormulaLexer(chars);
-  lexer.addErrorListener(new CountErrorListener((e) => lexerErrors.push(e)));
+  schemaMapModel: ContextResource,
+  formulaRtType: DataType,
+): { ast: StatContext; errors: IFormulaError[] } {
+  const inputStream = CharStreams.fromString(formula);
+  const lexer = new FormulaLexer(inputStream);
+  lexer.removeErrorListeners();
+  const tbexpLangErrorsListner = new FormulaErrorListener();
+  lexer.addErrorListener(tbexpLangErrorsListner);
   const tokenStream = new CommonTokenStream(lexer);
   const parser = new FormulaParser(tokenStream);
-  parser.errorHandler = new BailErrorStrategy();
-  parser.buildParseTree = true;
-  try {
-    const tree = parser.stat();
-    const listener: FormulaParserChecker = new FormulaParserCheckerImpl(
-      getFieldType,
-    );
-    ParseTreeWalker.DEFAULT.walk(listener, tree);
-    if (lexerErrors.length > 0 || parser.numberOfSyntaxErrors > 0) {
-      return {
-        success: false,
-        result: new DataType(TYPE.UNKNOW),
-      };
-    }
-    return listener.getType();
-  } catch {
-    return {
-      success: false,
-      result: new DataType(TYPE.NULL),
-    };
+  parser.removeErrorListeners();
+  parser.addErrorListener(tbexpLangErrorsListner);
+  const ast = parser.stat();
+  let errors: IFormulaError[] = tbexpLangErrorsListner.getErrors();
+  if (errors.length > 0) {
+    return { ast, errors };
   }
+  const listener: FormulaParserChecker = new FormulaParserCheckerImpl(
+    schemaMapModel,
+    formulaRtType,
+  );
+  ParseTreeWalker.DEFAULT.walk(listener, ast);
+  const typeErrors = listener.getErrors();
+  if (typeErrors.length > 0) {
+    errors = errors.concat(typeErrors);
+  }
+  console.log('parseTypeErrors', errors);
+  return { ast, errors };
+}
+
+export function parseAndGetSyntaxErrors(
+  code: string,
+  schemaMapModel: ContextResource,
+  formulaRtType: DataType,
+): IFormulaError[] {
+  const { errors } = formulaParseType(code, schemaMapModel, formulaRtType);
+  return errors;
 }
 
 export function formulaTreeTest(formula: string) {

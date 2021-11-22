@@ -1,5 +1,7 @@
 import { formulaParse, formulaParseType } from '../index';
 import { DataType, TYPE } from '../formulaType';
+import { ContextResource } from '../schemaMap.data';
+import { MetaValueType } from '@toy-box/meta-schema';
 
 // test('run 1 + 2 to equal 3', () => {
 //   expect(formulaParse('1+2').result).toBe(3);
@@ -10,7 +12,7 @@ import { DataType, TYPE } from '../formulaType';
 // });
 
 // test('sum 1 and 2 + field to equal 4', () => {
-//   expect(formulaParse('SUM(1, 2) + {!field}', () => 1).result).toBe(4);
+//   expect(formulaParse('SUM(1, 2) + field', () => 1).result).toBe(4);
 // });
 
 // test('concat {!first} and " " and {!last} to equal "{!first} {!last}"', () => {
@@ -19,30 +21,53 @@ import { DataType, TYPE } from '../formulaType';
 //   ).toBe('{!first} {!last}');
 // });
 
-// test('123 type is number', () => {
-//   expect(
-//     formulaParseType('123', (path) => new DataType(TYPE.UNKNOW)).result
-//       .isDecimalLike,
-//   ).toBe(true);
-// });
-
-// test('1 +  2 type is number', () => {
-//   expect(
-//     formulaParseType('1 + 2', (path) => new DataType(TYPE.UNKNOW)).result
-//       .isDecimalLike,
-//   ).toBe(true);
-// });
-
-// test('1 +  2 sum type is unknow', () => {
-//   expect(
-//     formulaParseType('1 + 2 sum', (path) => new DataType(TYPE.UNKNOW)).result
-//       .isUnknow,
-//   ).toBe(true);
-// });
-
-test('empty formula', () => {
+test('COUNT(1) type is number', () => {
   expect(
-    formulaParseType('abc * 123', (path) => new DataType(TYPE.UNKNOW)).result
-      .isDecimalLike,
+    formulaParseType(
+      'COUNT(1)',
+      (text) => new DataType(TYPE.STRING),
+      new DataType(TYPE.NUMBER),
+    ).errors.length == 0,
+  ).toBe(true);
+});
+
+test('1+2+3 + $currentUser.id type is number', () => {
+  expect(
+    formulaParseType(
+      '1+2+3 + $currentUser.id',
+      (text) => new DataType(TYPE.NUMBER),
+      new DataType(TYPE.NUMBER),
+    ).errors.length == 0,
+  ).toBe(true);
+});
+
+test('SWITCH(true,1,2,1) type is unknow', () => {
+  // IF 和 SWITCH 函数返回unknow类型，可以支持任何类型
+  expect(
+    formulaParseType(
+      'SWITCH(true,1,2,1)',
+      (text) => new DataType(TYPE.NUMBER),
+      new DataType(TYPE.STRING),
+    ).errors.length == 0,
+  ).toBe(true);
+});
+
+test('NOW() type is date', () => {
+  expect(
+    formulaParseType(
+      'NOW()',
+      (text) => new DataType(TYPE.NUMBER),
+      new DataType(TYPE.DATE),
+    ).errors.length == 0,
+  ).toBe(true);
+});
+
+test('CONCATENATE("a",2,TODAY()) type is string', () => {
+  expect(
+    formulaParseType(
+      'CONCATENATE("a",2,TODAY(),$currentUser.id)',
+      (text) => new DataType(TYPE.NUMBER),
+      new DataType(TYPE.STRING),
+    ).errors.length == 0,
   ).toBe(true);
 });

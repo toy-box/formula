@@ -15,8 +15,8 @@ import {
   StringLiteralExpressionContext,
   VariableExpressionContext,
   CompareExpressionContext,
-} from './FormulaParser';
-import { ParserException } from './ParserException';
+} from '../antlr/FormulaParser';
+import { ParserException } from './exception/ParserException';
 import { ParseResult } from './types';
 import { FormulaParserRuner } from './FormulaParserRuner';
 import { formulaPlus } from '../formula';
