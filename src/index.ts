@@ -3,5 +3,6 @@ export {
   formulaParse,
   formulaParseType,
   formulaTreeTest,
+  parseAndGetSyntaxErrors,
 } from './formulaParse';
-export * from './formulaType/types';
+export * from './formulaType';

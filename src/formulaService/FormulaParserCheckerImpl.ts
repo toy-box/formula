@@ -19,8 +19,6 @@ import { ArgumentItem, FormulaParserChecker } from './FormulaParserChecker';
 import { ParserException } from './exception/ParserException';
 import { ParseType } from './types';
 import { formulaType, DataType, TYPE, fromMetaType } from '../formulaType';
-import { ContextResource, getVariableType } from '../schemaMap.data';
-import { MetaValueType } from '@toy-box/meta-schema';
 import { IFormulaError } from './FormulaErrorListener';
 import {
   ArgumentErrorModel,
@@ -28,6 +26,7 @@ import {
   GetArugumentErrorCodeMsg,
   ValidateException,
 } from './exception/ValidateException';
+import { times } from 'lodash';
 
 export type FieldTypeGet = (pattern: string) => DataType;
 
@@ -309,8 +308,7 @@ export class FormulaParserCheckerImpl implements FormulaParserChecker {
         success: true,
         result: this.parserMap.get(ctx.getChild(0)).getDataType(),
       };
-      if (!this.parseType.result.isUnknow && this.formulaRtType != undefined) {
-        // let returnDataType = fromMetaType(this.formulaRtType);
+      if (!this.parseType.result.isUnknow && !this.formulaRtType.isUnknow) {
         if (
           JSON.stringify(this.formulaRtType) !=
           JSON.stringify(this.parseType.result)
