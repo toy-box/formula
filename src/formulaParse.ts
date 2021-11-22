@@ -12,8 +12,6 @@ import { FormulaParser, StatContext } from './antlr/FormulaParser';
 import { FormulaParserRuner } from './formulaService/FormulaParserRuner';
 import { FormulaParserRunerImpl } from './formulaService/FormulaParserRunerImpl';
 import { ParseTreeWalker } from 'antlr4ts/tree/ParseTreeWalker';
-import { ContextResource } from './schemaMap.data';
-import { MetaValueType } from '@toy-box/meta-schema';
 import FormulaErrorListener, {
   IFormulaError,
 } from './formulaService/FormulaErrorListener';
@@ -59,7 +57,7 @@ export function formulaParse(
 
 export function formulaParseType(
   formula: string = '',
-  schemaMapModel: ContextResource,
+  getFieldType: FieldTypeGet,
   formulaRtType: DataType,
 ): { ast: StatContext; errors: IFormulaError[] } {
   const inputStream = CharStreams.fromString(formula);
@@ -77,7 +75,7 @@ export function formulaParseType(
     return { ast, errors };
   }
   const listener: FormulaParserChecker = new FormulaParserCheckerImpl(
-    schemaMapModel,
+    getFieldType,
     formulaRtType,
   );
   ParseTreeWalker.DEFAULT.walk(listener, ast);
@@ -91,10 +89,10 @@ export function formulaParseType(
 
 export function parseAndGetSyntaxErrors(
   code: string,
-  schemaMapModel: ContextResource,
+  getFieldType: FieldTypeGet,
   formulaRtType: DataType,
 ): IFormulaError[] {
-  const { errors } = formulaParseType(code, schemaMapModel, formulaRtType);
+  const { errors } = formulaParseType(code, getFieldType, formulaRtType);
   return errors;
 }
 
