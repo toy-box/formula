@@ -1,6 +1,6 @@
 import { formulaParse, formulaParseType } from '../index';
 import { DataType, TYPE } from '../formulaType';
-import { ContextResource } from '../schemaMap.data';
+// import { ContextResource } from '../schemaMap.data';
 import { MetaValueType } from '@toy-box/meta-schema';
 
 // test('run 1 + 2 to equal 3', () => {
