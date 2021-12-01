@@ -31,8 +31,8 @@ $ npm run build
 IF 和 SWITCH 返回类型 UNKNOW  
 TODAY 和 NOW 没有入参
 
-暂未实现
-ISBLANK  
+暂不支持  
+TIMEVALUE
 CEILINGMATH  
 FLOORMATH  
 SPLIT  

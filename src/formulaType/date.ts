@@ -51,7 +51,7 @@ export const DATEVALUE = (...args: DataType[]) => {
   if (errors.length > 0) {
     throw new ValidateException(errors);
   }
-  return new DataType(TYPE.DATE);
+  return new DataType(TYPE.NUMBER);
 };
 
 export const DAY = (...args: DataType[]) => {
@@ -174,6 +174,16 @@ const oneArgReturnInt = (...args: DataType[]) => {
   if (args.length !== 1) {
     errors.push(argsNumWrongOrNull(...args));
   }
+  //文本格式的时间，例如，“10:30:00”；
+  if (!args[0].isTextLike) {
+    errors.push(
+      new ArgumentErrorModel(
+        ArugumentErrorCode.PARAM_TYPE,
+        '参数类型为文本格式的时间',
+        0,
+      ),
+    );
+  }
   if (errors.length > 0) {
     throw new ValidateException(errors);
   }
@@ -237,29 +247,55 @@ export const NOW = noArgsReturnDate;
 
 export const SECOND = oneArgReturnInt;
 
-/**
- * 将文本格式的时间转换为十进制表示的时间
- */
-export const TIMEVALUE = (...args: DataType[]) => {
+export const TIME = (...args: DataType[]) => {
   let errors: ArgumentErrorModel[] = [];
-  if (args.length !== 1) {
+  if (args.length !== 3) {
     errors.push(argsNumWrongOrNull(...args));
   } else {
-    if (!args[0].isTextLike) {
+    if (!args[0].isDecimalLike) {
       errors.push(
-        new ArgumentErrorModel(
-          ArugumentErrorCode.PARAM_TYPE,
-          '参数为时间格式的文本',
-          0,
-        ),
+        new ArgumentErrorModel(ArugumentErrorCode.PARAM_TYPE, '参数为数字', 0),
+      );
+    }
+    if (!args[1].isDecimalLike) {
+      errors.push(
+        new ArgumentErrorModel(ArugumentErrorCode.PARAM_TYPE, '参数为数字', 0),
+      );
+    }
+    if (!args[2].isDecimalLike) {
+      errors.push(
+        new ArgumentErrorModel(ArugumentErrorCode.PARAM_TYPE, '参数为数字', 0),
       );
     }
   }
   if (errors.length > 0) {
     throw new ValidateException(errors);
   }
-  return new DataType(TYPE.NUMBER);
+  return new DataType(TYPE.DATE);
 };
+/**
+ * 将文本格式的时间转换为十进制表示的时间,暂不支持
+ */
+// export const TIMEVALUE = (...args: DataType[]) => {
+//   let errors: ArgumentErrorModel[] = [];
+//   if (args.length !== 1) {
+//     errors.push(argsNumWrongOrNull(...args));
+//   } else {
+//     if (!args[0].isTextLike) {
+//       errors.push(
+//         new ArgumentErrorModel(
+//           ArugumentErrorCode.PARAM_TYPE,
+//           '参数为时间格式的文本',
+//           0,
+//         ),
+//       );
+//     }
+//   }
+//   if (errors.length > 0) {
+//     throw new ValidateException(errors);
+//   }
+//   return new DataType(TYPE.NUMBER);
+// };
 
 /**
  * 返回当前日期

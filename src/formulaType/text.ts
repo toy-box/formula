@@ -8,6 +8,7 @@ import { TYPE } from './types';
 
 export const CONCATENATE = (...args: DataType[]) => new DataType(TYPE.STRING);
 
+//两个字符串是否完全相同
 export const EXACT = (...args: DataType[]) => {
   let errors: ArgumentErrorModel[] = [];
   if (args.length != 2) {
@@ -19,10 +20,20 @@ export const EXACT = (...args: DataType[]) => {
       ),
     );
   }
+  if (!args[0].isTextLike) {
+    errors.push(
+      new ArgumentErrorModel(ArugumentErrorCode.PARAM_TYPE, '必须为字符串', 0),
+    );
+  }
+  if (!args[1].isTextLike) {
+    errors.push(
+      new ArgumentErrorModel(ArugumentErrorCode.PARAM_TYPE, '必须为字符串', 1),
+    );
+  }
   if (errors.length > 0) {
     throw new ValidateException(errors);
   }
-  return new DataType(TYPE.STRING);
+  return new DataType(TYPE.BOOLEAN);
 };
 
 export const FIND = (...args: DataType[]) => {

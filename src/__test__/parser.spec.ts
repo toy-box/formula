@@ -71,3 +71,10 @@ test('CONCATENATE("a",2,TODAY()) type is string', () => {
     ).errors.length == 0,
   ).toBe(true);
 });
+
+test('ISBLANK(TODAY()) type is boolean', () => {
+  expect(
+    formulaParseType('ISBLANK(TODAY())', null, new DataType(TYPE.BOOLEAN))
+      .errors.length == 0,
+  ).toBe(true);
+});

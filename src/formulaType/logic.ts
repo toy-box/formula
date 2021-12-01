@@ -102,10 +102,13 @@ export const SWITCH = (...args: DataType[]) => {
   return new DataType(TYPE.UNKNOW);
 };
 
-//后端暂未实现
-// export const ISBLANK = (...args: DataType[]) => {
-//   if (args.length !== 1) {
-//     return new DataType(TYPE.UNKNOW);
-//   }
-//   return new DataType(TYPE.BOOLEAN);
-// };
+export const ISBLANK = (...args: DataType[]) => {
+  let errors: ArgumentErrorModel[] = [];
+  if (args.length !== 1) {
+    errors.push(argsNumWrongOrNull(...args));
+  }
+  if (errors.length > 0) {
+    throw new ValidateException(errors);
+  }
+  return new DataType(TYPE.BOOLEAN);
+};
