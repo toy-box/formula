@@ -1,5 +1,5 @@
 import { formulaParse, formulaParseType } from '../index';
-import { DataType, TYPE } from '../formulaType';
+import { DataType, formulaResultType, TYPE } from '../formulaType';
 // import { ContextResource } from '../schemaMap.data';
 import { MetaValueType } from '@toy-box/meta-schema';
 
@@ -77,4 +77,12 @@ test('ISBLANK(TODAY()) type is boolean', () => {
     formulaParseType('ISBLANK(TODAY())', null, new DataType(TYPE.BOOLEAN))
       .errors.length == 0,
   ).toBe(true);
+});
+
+test('SUM result type is number', () => {
+  expect(formulaResultType['SUM']).toBe('number');
+});
+
+test('SPLIT result type is undefine', () => {
+  expect(formulaResultType['SPLIT']).toBe(undefined);
 });

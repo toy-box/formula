@@ -287,7 +287,7 @@ export const NUMBERVALUE = (...args: DataType[]) => {
   if (errors.length > 0) {
     throw new ValidateException(errors);
   }
-  return new DataType(TYPE.STRING);
+  return new DataType(TYPE.NUMBER);
 };
 
 /**
