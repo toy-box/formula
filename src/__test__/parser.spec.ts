@@ -1,88 +1,130 @@
-import { formulaParse, formulaParseType } from '../index';
-import { DataType, formulaResultType, TYPE } from '../formulaType';
-// import { ContextResource } from '../schemaMap.data';
-import { MetaValueType } from '@toy-box/meta-schema';
+import { parseAndGetSyntaxErrors, parseResult } from '../formulaParse';
 
+//基本运算
 // test('run 1 + 2 to equal 3', () => {
-//   expect(formulaParse('1+2').result).toBe(3);
+//   expect(parseResult('1+2',null).result).toBe(3);
 // });
 
 // test('sum 1 and 2 to equal 3', () => {
-//   expect(formulaParse('SUM(1, 2)').result).toBe(3);
+//   expect(parseResult('SUM(1, 2)',null).result).toBe(3);
 // });
 
 // test('sum 1 and 2 + field to equal 4', () => {
-//   expect(formulaParse('SUM(1, 2) + field', () => 1).result).toBe(4);
+//   expect(parseResult('SUM(1, 2) + field', (path)=>1).result).toBe(4);
 // });
 
-// test('concat {!first} and " " and {!last} to equal "{!first} {!last}"', () => {
+// test('sum 1 and 2 + field to equal 4', () => {
+//   expect(parseResult('SUM(1, 2) + field', (path) => 1).result).toBe(4);
+// });
+
+// test('(aaa * ($bbb + $ccc.a.e) / 2) + 6', () => {
+//   expect(parseResult('(aaa * ($bbb + $ccc.a.e) / 2) + 6', (path) => {
+//     if(path == 'aaa'){
+//       return 1
+//     }
+//     if(path == '$bbb'){
+//       return 2
+//     }
+//     if(path == '$ccc.a.e'){
+//       return 3
+//     }
+//   }).result>0).toBe(true);
+// });
+
+//比较大小
+// test('GTE', () => {
+//   expect(parseResult('179 >= aaa', (path) => "str").result).toBe(false);
+// });
+
+//日期时间函数
+
+test('NOW()', () => {
+  expect(parseResult('NOW()', null).success).toBe(true);
+});
+
+test('TODAY()', () => {
+  expect(parseResult('TODAY()', null).success).toBe(true);
+});
+
+test('DATE() 、', () => {
+  expect(parseResult('DATE(2021,8,27)', null).success).toBe(true);
+});
+
+// test('TIME()', () => {
+//   expect(parseResult('TIME(10,59,59)', null).success).toBe(true);
+// });
+
+//逻辑函数
+// test('IF()', () => {
+//   expect(parseResult('IF(true, 100, false)', null).success).toBe(true);
+// });
+
+// test('SWITCH()', () => {
+//   expect(parseResult('SWITCH(7, 9, "Nine", 7, $id)', (x)=>{
+//     return 8
+//   }).success).toBe(true);
+// });
+
+// test('ISBLANK()', () => {
+//   expect(parseResult('ISBLANK(TIME(10,59,59))', null).result).toBe(false);
+// });
+
+// //字符串函数
+// test('CONCATENATE()', () => {
 //   expect(
-//     formulaParse('CONCATENATE({!first}, " ", {!last})', (path) => path).result,
-//   ).toBe('{!first} {!last}');
+//     parseResult('CONCATENATE(first, " ", last)', (path) => path == 'first' ? 'hello' : 'world').result,
+//   ).toBe('hello world');
 // });
 
-test('COUNT(1) type is number', () => {
-  expect(
-    formulaParseType(
-      'COUNT(1)',
-      (text) => new DataType(TYPE.STRING),
-      new DataType(TYPE.NUMBER),
-    ).errors.length == 0,
-  ).toBe(true);
-});
+// test('UPPER()', () => {
+//   expect(
+//     parseResult('UPPER("ABcd")',null).success).toBe(true);
+// });
 
-test('1+2+3 + $currentUser.id type is number', () => {
-  expect(
-    formulaParseType(
-      '1+2+3 + $currentUser.id',
-      (text) => new DataType(TYPE.NUMBER),
-      new DataType(TYPE.NUMBER),
-    ).errors.length == 0,
-  ).toBe(true);
-});
+// test('1+2+3 + $currentUser.id type is number', () => {
+//   expect(
+//     parseAndGetSyntaxErrors(
+//       '1+2+3 + $currentUser.id',
+//       (text) => new DataType(TYPE.NUMBER),
+//       new DataType(TYPE.NUMBER),
+//     ).length == 0,
+//   ).toBe(true);
+// });
 
-test('SWITCH(true,1,2,1) type is unknow', () => {
-  // IF 和 SWITCH 函数返回unknow类型，可以支持任何类型
-  expect(
-    formulaParseType(
-      'SWITCH(true,1,2,1)',
-      (text) => new DataType(TYPE.NUMBER),
-      new DataType(TYPE.STRING),
-    ).errors.length == 0,
-  ).toBe(true);
-});
+// test('SWITCH(true,1,2,1) type is unknow', () => {
+//   // IF 和 SWITCH 函数返回unknow类型，可以支持任何类型
+//   expect(
+//     parseAndGetSyntaxErrors(
+//       'SWITCH(true,1,2,1)',
+//       (text) => new DataType(TYPE.NUMBER),
+//       new DataType(TYPE.STRING),
+//     ).length == 0,
+//   ).toBe(true);
+// });
 
-test('NOW() type is date', () => {
-  expect(
-    formulaParseType(
-      'NOW()',
-      (text) => new DataType(TYPE.NUMBER),
-      new DataType(TYPE.DATE),
-    ).errors.length == 0,
-  ).toBe(true);
-});
+// test('ISBLANK(TODAY()) type is boolean', () => {
+//   expect(
+//     parseAndGetSyntaxErrors('ISBLANK(TODAY())', null, new DataType(TYPE.BOOLEAN))
+//       .length == 0,
+//   ).toBe(true);
+// });
 
-test('CONCATENATE("a",2,TODAY()) type is string', () => {
-  expect(
-    formulaParseType(
-      'CONCATENATE("a",2,TODAY(),$currentUser.id)',
-      (text) => new DataType(TYPE.NUMBER),
-      new DataType(TYPE.STRING),
-    ).errors.length == 0,
-  ).toBe(true);
-});
+// test('NOW() type is date', () => {
+//   expect(
+//     parseAndGetSyntaxErrors(
+//       'NOW()',
+//       (text) => new DataType(TYPE.NUMBER),
+//       new DataType(TYPE.DATE),
+//     ).length == 0,
+//   ).toBe(true);
+// });
 
-test('ISBLANK(TODAY()) type is boolean', () => {
-  expect(
-    formulaParseType('ISBLANK(TODAY())', null, new DataType(TYPE.BOOLEAN))
-      .errors.length == 0,
-  ).toBe(true);
-});
-
-test('SUM result type is number', () => {
-  expect(formulaResultType['SUM']).toBe('number');
-});
-
-test('SPLIT result type is undefine', () => {
-  expect(formulaResultType['SPLIT']).toBe(undefined);
-});
+// test('CONCATENATE("a",2,TODAY()) type is string', () => {
+//   expect(
+//     parseAndGetSyntaxErrors(
+//       'CONCATENATE("a",2,TODAY(),$currentUser.id)',
+//       (text) => new DataType(TYPE.NUMBER),
+//       new DataType(TYPE.STRING),
+//     ).length == 0,
+//   ).toBe(true);
+// });

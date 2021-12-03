@@ -1,7 +1,5 @@
-// export * from './antlr';
 export {
-  formulaParse,
-  formulaParseType,
+  parseResult,
   formulaTreeTest,
   parseAndGetSyntaxErrors,
 } from './formulaParse';

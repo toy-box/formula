@@ -10,16 +10,19 @@ import { TYPE } from './formulaType';
 import { FormulaLexer } from './antlr/FormulaLexer';
 import { FormulaParser, StatContext } from './antlr/FormulaParser';
 import { FormulaParserRuner } from './formulaService/FormulaParserRuner';
-import { FormulaParserRunerImpl } from './formulaService/FormulaParserRunerImpl';
+import {
+  FieldValueGet,
+  FormulaParserRunerImpl,
+} from './formulaService/FormulaParserRunerImpl';
 import { ParseTreeWalker } from 'antlr4ts/tree/ParseTreeWalker';
 import FormulaErrorListener, {
   IFormulaError,
 } from './formulaService/FormulaErrorListener';
 
-export function formulaParse(
+const formulaParse = (
   formula: string,
-  getFieldValue: (pattern: string) => any = (pattern: string) => undefined,
-) {
+  getFieldValue: FieldValueGet, // (pattern: string) => any = (pattern: string) => undefined,
+) => {
   if (formula === '') {
     return {
       success: true,
@@ -53,13 +56,13 @@ export function formulaParse(
       result: null,
     };
   }
-}
+};
 
-export function formulaParseType(
+const formulaParseType = (
   formula: string = '',
   getFieldType: FieldTypeGet,
   formulaRtType: DataType,
-): { ast: StatContext; errors: IFormulaError[] } {
+): { ast: StatContext; errors: IFormulaError[] } => {
   const inputStream = CharStreams.fromString(formula);
   const lexer = new FormulaLexer(inputStream);
   lexer.removeErrorListeners();
@@ -85,7 +88,7 @@ export function formulaParseType(
   }
   console.log('parseTypeErrors', errors);
   return { ast, errors };
-}
+};
 
 export function parseAndGetSyntaxErrors(
   code: string,
@@ -94,6 +97,12 @@ export function parseAndGetSyntaxErrors(
 ): IFormulaError[] {
   const { errors } = formulaParseType(code, getFieldType, formulaRtType);
   return errors;
+}
+
+export function parseResult(code: string, getFieldValue: FieldValueGet) {
+  const result = formulaParse(code, getFieldValue);
+  console.log(`计算结果：${code} = ${JSON.stringify(result)}`);
+  return result;
 }
 
 export function formulaTreeTest(formula: string) {

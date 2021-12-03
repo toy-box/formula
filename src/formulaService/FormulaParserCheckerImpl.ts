@@ -26,7 +26,6 @@ import {
   GetArugumentErrorCodeMsg,
   ValidateException,
 } from './exception/ValidateException';
-import { times } from 'lodash';
 
 export type FieldTypeGet = (pattern: string) => DataType;
 

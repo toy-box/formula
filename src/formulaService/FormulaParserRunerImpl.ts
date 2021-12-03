@@ -20,8 +20,9 @@ import { ParserException } from './exception/ParserException';
 import { ParseResult } from './types';
 import { FormulaParserRuner } from './FormulaParserRuner';
 import { formulaPlus } from '../formula';
+// import { NOW } from '../formulaType/resolver';
 
-declare type FieldValueGet = (pattern: string) => any;
+export declare type FieldValueGet = (pattern: string) => any | undefined;
 
 export class FormulaParserRunerImpl implements FormulaParserRuner {
   private parseResult: ParseResult = {
@@ -57,14 +58,13 @@ export class FormulaParserRunerImpl implements FormulaParserRuner {
   }
 
   exitVariableExpression(ctx: VariableExpressionContext) {
-    this.parserMap.set(
-      ctx,
-      this.getFieldValue(ctx.variable().FieldLiteral().text),
-    );
+    const val = this.getFieldValue(ctx.variable().FieldLiteral().text);
+    console.log(`变量的值：${ctx.variable().FieldLiteral().text} = ${val}`);
+    this.parserMap.set(ctx, val);
   }
 
   exitFunction(ctx: FunctionContext) {
-    const args = this.parserMap.get(ctx.getChild(1)) as number[];
+    const args = this.parserMap.get(ctx.getChild(1)) as any[];
     const fn = formulaPlus[
       ctx.getChild(0).text.toUpperCase() as FormulaType
     ] as (...args: any[]) => any;
@@ -75,6 +75,12 @@ export class FormulaParserRunerImpl implements FormulaParserRuner {
         result: new ParserException('function not exists'),
       };
     } else {
+      const fnName = ctx.getChild(0).text.toUpperCase();
+      console.log(`函数名:${fnName}(),args:${args}`);
+      if (fnName === 'NOW' || fnName === 'TODAY') {
+        this.parserMap.set(ctx, fn());
+        return;
+      }
       this.parserMap.set(ctx, fn(...args));
     }
   }
