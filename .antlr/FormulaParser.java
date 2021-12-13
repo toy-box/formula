@@ -18,7 +18,7 @@ public class FormulaParser extends Parser {
 	public static final int
 		OpenParen=1, CloseParen=2, OpenBrace=3, CloseBrace=4, Comma=5, Plus=6, 
 		Minus=7, Multiply=8, Divide=9, EQ=10, NE=11, GT=12, GTE=13, LT=14, LTE=15, 
-		BooleanLiteral=16, FunctionLiteral=17, FieldLiteral=18, DecimalLiteral=19, 
+		BooleanLiteral=16, FunctionLiteral=17, DecimalLiteral=18, FieldLiteral=19, 
 		StringLiteral=20, WhiteSpaces=21;
 	public static final int
 		RULE_stat = 0, RULE_arguments = 1, RULE_argumentList = 2, RULE_argument = 3, 
@@ -42,7 +42,7 @@ public class FormulaParser extends Parser {
 		return new String[] {
 			null, "OpenParen", "CloseParen", "OpenBrace", "CloseBrace", "Comma", 
 			"Plus", "Minus", "Multiply", "Divide", "EQ", "NE", "GT", "GTE", "LT", 
-			"LTE", "BooleanLiteral", "FunctionLiteral", "FieldLiteral", "DecimalLiteral", 
+			"LTE", "BooleanLiteral", "FunctionLiteral", "DecimalLiteral", "FieldLiteral", 
 			"StringLiteral", "WhiteSpaces"
 		};
 	}
@@ -153,7 +153,7 @@ public class FormulaParser extends Parser {
 			setState(21);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << OpenParen) | (1L << BooleanLiteral) | (1L << FunctionLiteral) | (1L << FieldLiteral) | (1L << DecimalLiteral) | (1L << StringLiteral))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << OpenParen) | (1L << BooleanLiteral) | (1L << FunctionLiteral) | (1L << DecimalLiteral) | (1L << FieldLiteral) | (1L << StringLiteral))) != 0)) {
 				{
 				setState(17);
 				argumentList();
@@ -627,8 +627,8 @@ public class FormulaParser extends Parser {
 		"\25\24\3\2\2\2\25\26\3\2\2\2\26\30\3\2\2\2\27\23\3\2\2\2\27\30\3\2\2\2"+
 		"\30\31\3\2\2\2\31\32\7\4\2\2\32\5\3\2\2\2\33 \5\b\5\2\34\35\7\7\2\2\35"+
 		"\37\5\b\5\2\36\34\3\2\2\2\37\"\3\2\2\2 \36\3\2\2\2 !\3\2\2\2!\7\3\2\2"+
-		"\2\" \3\2\2\2#$\5\16\b\2$\t\3\2\2\2%&\7\24\2\2&\13\3\2\2\2\'(\7\23\2\2"+
-		"()\5\4\3\2)\r\3\2\2\2*+\b\b\1\2+\65\7\25\2\2,\65\7\26\2\2-\65\7\22\2\2"+
+		"\2\" \3\2\2\2#$\5\16\b\2$\t\3\2\2\2%&\7\25\2\2&\13\3\2\2\2\'(\7\23\2\2"+
+		"()\5\4\3\2)\r\3\2\2\2*+\b\b\1\2+\65\7\24\2\2,\65\7\26\2\2-\65\7\22\2\2"+
 		".\65\5\f\7\2/\65\5\n\6\2\60\61\7\3\2\2\61\62\5\16\b\2\62\63\7\4\2\2\63"+
 		"\65\3\2\2\2\64*\3\2\2\2\64,\3\2\2\2\64-\3\2\2\2\64.\3\2\2\2\64/\3\2\2"+
 		"\2\64\60\3\2\2\2\65A\3\2\2\2\66\67\f\5\2\2\678\t\2\2\28@\5\16\b\69:\f"+

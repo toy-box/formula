@@ -89,14 +89,14 @@ FunctionLiteral:
 	| 'ISBLANK'
 	| 'INCLUDES';
 
+/// Numeric Literals DecimalLiteral: DecimalIntegerLiteral '.' [0-9]* | '.' [0-9]+ |
+// DecimalIntegerLiteral;
+DecimalLiteral:
+	NumberLiteral
+	; //      | '-'? NumberLiteral //暂不支持-会和-号冲突
+
 /// Field Literals
 FieldLiteral: Field;
-
-/// Numeric Literals
-DecimalLiteral:
-	DecimalIntegerLiteral '.' [0-9]*
-	| '.' [0-9]+
-	| DecimalIntegerLiteral;
 
 /// String Literals
 StringLiteral:
@@ -147,19 +147,26 @@ fragment LineContinuation: '\\' [\r\n\u2028\u2029];
 
 fragment HexDigit: [0-9a-fA-F];
 
-fragment DecimalIntegerLiteral: '0' | '-'? [0-9] [0-9]*;
+fragment DIGIT: [0-9]; // match single digit
+
+fragment INT: DIGIT+;
+
+fragment FLOAT:
+	DIGIT+ '.' DIGIT+ ; // match 1. 39. 3.14159 etc...
+fragment NumberLiteral: INT | FLOAT;
+
+fragment DecimalIntegerLiteral: '0' | '-'? [0-9] [0-9]*; //废弃
 
 fragment Field:
 	FieldPathSegment FieldPathSubSegment*
-	| FieldPathSegment '[' DecimalIntegerLiteral ']' FieldPathSubSegment*
+	| FieldPathSegment '[' INT ']' FieldPathSubSegment*
 	| '$' FieldPathSegment FieldPathSubSegment*
-	| '$' FieldPathSegment '[' DecimalIntegerLiteral ']' FieldPathSubSegment*;
+	| '$' FieldPathSegment '[' INT ']' FieldPathSubSegment*;
 
 fragment FieldPath: FieldPathSegment FieldPathSubSegment*;
 
-fragment FieldPathSegment:
-	[a-zA-Z_][a-zA-Z0-9_]*;
+fragment FieldPathSegment: [0-9a-zA-Z_][a-zA-Z0-9_]*;
 
 fragment FieldPathSubSegment:
 	'.' FieldPathSegment
-	| '.' FieldPathSegment '[' DecimalIntegerLiteral ']';
+	| '.' FieldPathSegment '[' INT ']';

@@ -1,4 +1,5 @@
 import { parseAndGetSyntaxErrors, parseResult } from '../formulaParse';
+import { DataType, TYPE } from '../formulaType';
 
 //基本运算
 // test('run 1 + 2 to equal 3', () => {
@@ -17,19 +18,21 @@ import { parseAndGetSyntaxErrors, parseResult } from '../formulaParse';
 //   expect(parseResult('SUM(1, 2) + field', (path) => 1).result).toBe(4);
 // });
 
-// test('(aaa * ($bbb + $ccc.a.e) / 2) + 6', () => {
-//   expect(parseResult('(aaa * ($bbb + $ccc.a.e) / 2) + 6', (path) => {
-//     if(path == 'aaa'){
-//       return 1
-//     }
-//     if(path == '$bbb'){
-//       return 2
-//     }
-//     if(path == '$ccc.a.e'){
-//       return 3
-//     }
-//   }).result>0).toBe(true);
-// });
+test('(aaa * ($bbb + $ccc.a.e) / 2) + 6', () => {
+  expect(
+    parseResult('(aaa * ($bbb + $ccc.a.e) / 2) + 6', (path) => {
+      if (path == 'aaa') {
+        return 1;
+      }
+      if (path == '$bbb') {
+        return 2;
+      }
+      if (path == '$ccc.a.e') {
+        return 3;
+      }
+    }).result > 0,
+  ).toBe(true);
+});
 
 //比较大小
 // test('GTE', () => {
@@ -81,15 +84,15 @@ test('DATE() 、', () => {
 //     parseResult('UPPER("ABcd")',null).success).toBe(true);
 // });
 
-// test('1+2+3 + $currentUser.id type is number', () => {
-//   expect(
-//     parseAndGetSyntaxErrors(
-//       '1+2+3 + $currentUser.id',
-//       (text) => new DataType(TYPE.NUMBER),
-//       new DataType(TYPE.NUMBER),
-//     ).length == 0,
-//   ).toBe(true);
-// });
+test('1+2+3 + $currentUser.id type is number', () => {
+  expect(
+    parseAndGetSyntaxErrors(
+      '1+2+3aaa + $currentUser.id',
+      (text) => new DataType(TYPE.NUMBER),
+      new DataType(TYPE.NUMBER),
+    ).length == 0,
+  ).toBe(true);
+});
 
 // test('SWITCH(true,1,2,1) type is unknow', () => {
 //   // IF 和 SWITCH 函数返回unknow类型，可以支持任何类型

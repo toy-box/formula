@@ -42,8 +42,8 @@ export class FormulaParser extends Parser {
   public static readonly LTE = 15;
   public static readonly BooleanLiteral = 16;
   public static readonly FunctionLiteral = 17;
-  public static readonly FieldLiteral = 18;
-  public static readonly DecimalLiteral = 19;
+  public static readonly DecimalLiteral = 18;
+  public static readonly FieldLiteral = 19;
   public static readonly StringLiteral = 20;
   public static readonly WhiteSpaces = 21;
   public static readonly RULE_stat = 0;
@@ -101,8 +101,8 @@ export class FormulaParser extends Parser {
     'LTE',
     'BooleanLiteral',
     'FunctionLiteral',
-    'FieldLiteral',
     'DecimalLiteral',
+    'FieldLiteral',
     'StringLiteral',
     'WhiteSpaces',
   ];
@@ -190,8 +190,8 @@ export class FormulaParser extends Parser {
             ((1 << FormulaParser.OpenParen) |
               (1 << FormulaParser.BooleanLiteral) |
               (1 << FormulaParser.FunctionLiteral) |
-              (1 << FormulaParser.FieldLiteral) |
               (1 << FormulaParser.DecimalLiteral) |
+              (1 << FormulaParser.FieldLiteral) |
               (1 << FormulaParser.StringLiteral))) !==
             0
         ) {
@@ -652,9 +652,9 @@ export class FormulaParser extends Parser {
     '\x1A\x07\x04\x02\x02\x1A\x05\x03\x02\x02\x02\x1B \x05\b\x05\x02\x1C\x1D' +
     '\x07\x07\x02\x02\x1D\x1F\x05\b\x05\x02\x1E\x1C\x03\x02\x02\x02\x1F"\x03' +
     '\x02\x02\x02 \x1E\x03\x02\x02\x02 !\x03\x02\x02\x02!\x07\x03\x02\x02\x02' +
-    '" \x03\x02\x02\x02#$\x05\x0E\b\x02$\t\x03\x02\x02\x02%&\x07\x14\x02\x02' +
+    '" \x03\x02\x02\x02#$\x05\x0E\b\x02$\t\x03\x02\x02\x02%&\x07\x15\x02\x02' +
     "&\v\x03\x02\x02\x02'(\x07\x13\x02\x02()\x05\x04\x03\x02)\r\x03\x02\x02" +
-    '\x02*+\b\b\x01\x02+5\x07\x15\x02\x02,5\x07\x16\x02\x02-5\x07\x12\x02\x02' +
+    '\x02*+\b\b\x01\x02+5\x07\x14\x02\x02,5\x07\x16\x02\x02-5\x07\x12\x02\x02' +
     '.5\x05\f\x07\x02/5\x05\n\x06\x0201\x07\x03\x02\x0212\x05\x0E\b\x0223\x07' +
     '\x04\x02\x0235\x03\x02\x02\x024*\x03\x02\x02\x024,\x03\x02\x02\x024-\x03' +
     '\x02\x02\x024.\x03\x02\x02\x024/\x03\x02\x02\x0240\x03\x02\x02\x025A\x03' +
