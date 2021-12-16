@@ -4,7 +4,7 @@ options {
 	tokenVocab = FormulaLexer;
 }
 
-stat: singleExpression;
+stat: singleExpression | NEWLINE;
 
 arguments: '(' (argumentList ','?)? ')';
 

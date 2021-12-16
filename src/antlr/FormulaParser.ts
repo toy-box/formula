@@ -45,7 +45,8 @@ export class FormulaParser extends Parser {
   public static readonly DecimalLiteral = 18;
   public static readonly FieldLiteral = 19;
   public static readonly StringLiteral = 20;
-  public static readonly WhiteSpaces = 21;
+  public static readonly NEWLINE = 21;
+  public static readonly WS = 22;
   public static readonly RULE_stat = 0;
   public static readonly RULE_arguments = 1;
   public static readonly RULE_argumentList = 2;
@@ -104,7 +105,8 @@ export class FormulaParser extends Parser {
     'DecimalLiteral',
     'FieldLiteral',
     'StringLiteral',
-    'WhiteSpaces',
+    'NEWLINE',
+    'WS',
   ];
   public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(
     FormulaParser._LITERAL_NAMES,
@@ -150,10 +152,30 @@ export class FormulaParser extends Parser {
     let _localctx: StatContext = new StatContext(this._ctx, this.state);
     this.enterRule(_localctx, 0, FormulaParser.RULE_stat);
     try {
-      this.enterOuterAlt(_localctx, 1);
-      {
-        this.state = 14;
-        this.singleExpression(0);
+      this.state = 16;
+      this._errHandler.sync(this);
+      switch (this._input.LA(1)) {
+        case FormulaParser.OpenParen:
+        case FormulaParser.BooleanLiteral:
+        case FormulaParser.FunctionLiteral:
+        case FormulaParser.DecimalLiteral:
+        case FormulaParser.FieldLiteral:
+        case FormulaParser.StringLiteral:
+          this.enterOuterAlt(_localctx, 1);
+          {
+            this.state = 14;
+            this.singleExpression(0);
+          }
+          break;
+        case FormulaParser.NEWLINE:
+          this.enterOuterAlt(_localctx, 2);
+          {
+            this.state = 15;
+            this.match(FormulaParser.NEWLINE);
+          }
+          break;
+        default:
+          throw new NoViableAltException(this);
       }
     } catch (re) {
       if (re instanceof RecognitionException) {
@@ -179,9 +201,9 @@ export class FormulaParser extends Parser {
     try {
       this.enterOuterAlt(_localctx, 1);
       {
-        this.state = 16;
+        this.state = 18;
         this.match(FormulaParser.OpenParen);
-        this.state = 21;
+        this.state = 23;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
         if (
@@ -196,21 +218,21 @@ export class FormulaParser extends Parser {
             0
         ) {
           {
-            this.state = 17;
-            this.argumentList();
             this.state = 19;
+            this.argumentList();
+            this.state = 21;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
             if (_la === FormulaParser.Comma) {
               {
-                this.state = 18;
+                this.state = 20;
                 this.match(FormulaParser.Comma);
               }
             }
           }
         }
 
-        this.state = 23;
+        this.state = 25;
         this.match(FormulaParser.CloseParen);
       }
     } catch (re) {
@@ -237,25 +259,25 @@ export class FormulaParser extends Parser {
       let _alt: number;
       this.enterOuterAlt(_localctx, 1);
       {
-        this.state = 25;
+        this.state = 27;
         this.argument();
-        this.state = 30;
+        this.state = 32;
         this._errHandler.sync(this);
-        _alt = this.interpreter.adaptivePredict(this._input, 2, this._ctx);
+        _alt = this.interpreter.adaptivePredict(this._input, 3, this._ctx);
         while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
           if (_alt === 1) {
             {
               {
-                this.state = 26;
+                this.state = 28;
                 this.match(FormulaParser.Comma);
-                this.state = 27;
+                this.state = 29;
                 this.argument();
               }
             }
           }
-          this.state = 32;
+          this.state = 34;
           this._errHandler.sync(this);
-          _alt = this.interpreter.adaptivePredict(this._input, 2, this._ctx);
+          _alt = this.interpreter.adaptivePredict(this._input, 3, this._ctx);
         }
       }
     } catch (re) {
@@ -278,7 +300,7 @@ export class FormulaParser extends Parser {
     try {
       this.enterOuterAlt(_localctx, 1);
       {
-        this.state = 33;
+        this.state = 35;
         this.singleExpression(0);
       }
     } catch (re) {
@@ -301,7 +323,7 @@ export class FormulaParser extends Parser {
     try {
       this.enterOuterAlt(_localctx, 1);
       {
-        this.state = 35;
+        this.state = 37;
         this.match(FormulaParser.FieldLiteral);
       }
     } catch (re) {
@@ -324,9 +346,9 @@ export class FormulaParser extends Parser {
     try {
       this.enterOuterAlt(_localctx, 1);
       {
-        this.state = 37;
+        this.state = 39;
         this.match(FormulaParser.FunctionLiteral);
-        this.state = 38;
+        this.state = 40;
         this.arguments();
       }
     } catch (re) {
@@ -370,7 +392,7 @@ export class FormulaParser extends Parser {
       let _alt: number;
       this.enterOuterAlt(_localctx, 1);
       {
-        this.state = 50;
+        this.state = 52;
         this._errHandler.sync(this);
         switch (this._input.LA(1)) {
           case FormulaParser.DecimalLiteral:
@@ -379,7 +401,7 @@ export class FormulaParser extends Parser {
               this._ctx = _localctx;
               _prevctx = _localctx;
 
-              this.state = 41;
+              this.state = 43;
               this.match(FormulaParser.DecimalLiteral);
             }
             break;
@@ -388,7 +410,7 @@ export class FormulaParser extends Parser {
               _localctx = new StringLiteralExpressionContext(_localctx);
               this._ctx = _localctx;
               _prevctx = _localctx;
-              this.state = 42;
+              this.state = 44;
               this.match(FormulaParser.StringLiteral);
             }
             break;
@@ -397,7 +419,7 @@ export class FormulaParser extends Parser {
               _localctx = new BooleanLiteralExpressionContext(_localctx);
               this._ctx = _localctx;
               _prevctx = _localctx;
-              this.state = 43;
+              this.state = 45;
               this.match(FormulaParser.BooleanLiteral);
             }
             break;
@@ -406,7 +428,7 @@ export class FormulaParser extends Parser {
               _localctx = new FunctionExpressionContext(_localctx);
               this._ctx = _localctx;
               _prevctx = _localctx;
-              this.state = 44;
+              this.state = 46;
               this.function();
             }
             break;
@@ -415,7 +437,7 @@ export class FormulaParser extends Parser {
               _localctx = new VariableExpressionContext(_localctx);
               this._ctx = _localctx;
               _prevctx = _localctx;
-              this.state = 45;
+              this.state = 47;
               this.variable();
             }
             break;
@@ -424,11 +446,11 @@ export class FormulaParser extends Parser {
               _localctx = new ParenthesizedExpressionContext(_localctx);
               this._ctx = _localctx;
               _prevctx = _localctx;
-              this.state = 46;
-              this.match(FormulaParser.OpenParen);
-              this.state = 47;
-              this.singleExpression(0);
               this.state = 48;
+              this.match(FormulaParser.OpenParen);
+              this.state = 49;
+              this.singleExpression(0);
+              this.state = 50;
               this.match(FormulaParser.CloseParen);
             }
             break;
@@ -436,9 +458,9 @@ export class FormulaParser extends Parser {
             throw new NoViableAltException(this);
         }
         this._ctx._stop = this._input.tryLT(-1);
-        this.state = 63;
+        this.state = 65;
         this._errHandler.sync(this);
-        _alt = this.interpreter.adaptivePredict(this._input, 5, this._ctx);
+        _alt = this.interpreter.adaptivePredict(this._input, 6, this._ctx);
         while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
           if (_alt === 1) {
             if (this._parseListeners != null) {
@@ -446,10 +468,10 @@ export class FormulaParser extends Parser {
             }
             _prevctx = _localctx;
             {
-              this.state = 61;
+              this.state = 63;
               this._errHandler.sync(this);
               switch (
-                this.interpreter.adaptivePredict(this._input, 4, this._ctx)
+                this.interpreter.adaptivePredict(this._input, 5, this._ctx)
               ) {
                 case 1:
                   {
@@ -461,13 +483,13 @@ export class FormulaParser extends Parser {
                       _startState,
                       FormulaParser.RULE_singleExpression,
                     );
-                    this.state = 52;
+                    this.state = 54;
                     if (!this.precpred(this._ctx, 3)) {
                       throw this.createFailedPredicateException(
                         'this.precpred(this._ctx, 3)',
                       );
                     }
-                    this.state = 53;
+                    this.state = 55;
                     (_localctx as MultiplicativeExpressionContext)._op =
                       this._input.LT(1);
                     _la = this._input.LA(1);
@@ -487,7 +509,7 @@ export class FormulaParser extends Parser {
                       this._errHandler.reportMatch(this);
                       this.consume();
                     }
-                    this.state = 54;
+                    this.state = 56;
                     this.singleExpression(4);
                   }
                   break;
@@ -502,13 +524,13 @@ export class FormulaParser extends Parser {
                       _startState,
                       FormulaParser.RULE_singleExpression,
                     );
-                    this.state = 55;
+                    this.state = 57;
                     if (!this.precpred(this._ctx, 2)) {
                       throw this.createFailedPredicateException(
                         'this.precpred(this._ctx, 2)',
                       );
                     }
-                    this.state = 56;
+                    this.state = 58;
                     (_localctx as AdditiveExpressionContext)._op =
                       this._input.LT(1);
                     _la = this._input.LA(1);
@@ -528,7 +550,7 @@ export class FormulaParser extends Parser {
                       this._errHandler.reportMatch(this);
                       this.consume();
                     }
-                    this.state = 57;
+                    this.state = 59;
                     this.singleExpression(3);
                   }
                   break;
@@ -543,13 +565,13 @@ export class FormulaParser extends Parser {
                       _startState,
                       FormulaParser.RULE_singleExpression,
                     );
-                    this.state = 58;
+                    this.state = 60;
                     if (!this.precpred(this._ctx, 1)) {
                       throw this.createFailedPredicateException(
                         'this.precpred(this._ctx, 1)',
                       );
                     }
-                    this.state = 59;
+                    this.state = 61;
                     (_localctx as CompareExpressionContext)._cmp =
                       this._input.LT(1);
                     _la = this._input.LA(1);
@@ -576,16 +598,16 @@ export class FormulaParser extends Parser {
                       this._errHandler.reportMatch(this);
                       this.consume();
                     }
-                    this.state = 60;
+                    this.state = 62;
                     this.singleExpression(2);
                   }
                   break;
               }
             }
           }
-          this.state = 65;
+          this.state = 67;
           this._errHandler.sync(this);
-          _alt = this.interpreter.adaptivePredict(this._input, 5, this._ctx);
+          _alt = this.interpreter.adaptivePredict(this._input, 6, this._ctx);
         }
       }
     } catch (re) {
@@ -634,35 +656,36 @@ export class FormulaParser extends Parser {
   }
 
   public static readonly _serializedATN: string =
-    '\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x17E\x04\x02' +
+    '\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x18G\x04\x02' +
     '\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07' +
-    '\t\x07\x04\b\t\b\x03\x02\x03\x02\x03\x03\x03\x03\x03\x03\x05\x03\x16\n' +
-    '\x03\x05\x03\x18\n\x03\x03\x03\x03\x03\x03\x04\x03\x04\x03\x04\x07\x04' +
-    '\x1F\n\x04\f\x04\x0E\x04"\v\x04\x03\x05\x03\x05\x03\x06\x03\x06\x03\x07' +
-    '\x03\x07\x03\x07\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b' +
-    '\x03\b\x05\b5\n\b\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b\x03' +
-    '\b\x07\b@\n\b\f\b\x0E\bC\v\b\x03\b\x02\x02\x03\x0E\t\x02\x02\x04\x02\x06' +
-    '\x02\b\x02\n\x02\f\x02\x0E\x02\x02\x05\x03\x02\n\v\x03\x02\b\t\x03\x02' +
-    '\f\x11\x02H\x02\x10\x03\x02\x02\x02\x04\x12\x03\x02\x02\x02\x06\x1B\x03' +
-    "\x02\x02\x02\b#\x03\x02\x02\x02\n%\x03\x02\x02\x02\f'\x03\x02\x02\x02" +
-    '\x0E4\x03\x02\x02\x02\x10\x11\x05\x0E\b\x02\x11\x03\x03\x02\x02\x02\x12' +
-    '\x17\x07\x03\x02\x02\x13\x15\x05\x06\x04\x02\x14\x16\x07\x07\x02\x02\x15' +
-    '\x14\x03\x02\x02\x02\x15\x16\x03\x02\x02\x02\x16\x18\x03\x02\x02\x02\x17' +
-    '\x13\x03\x02\x02\x02\x17\x18\x03\x02\x02\x02\x18\x19\x03\x02\x02\x02\x19' +
-    '\x1A\x07\x04\x02\x02\x1A\x05\x03\x02\x02\x02\x1B \x05\b\x05\x02\x1C\x1D' +
-    '\x07\x07\x02\x02\x1D\x1F\x05\b\x05\x02\x1E\x1C\x03\x02\x02\x02\x1F"\x03' +
-    '\x02\x02\x02 \x1E\x03\x02\x02\x02 !\x03\x02\x02\x02!\x07\x03\x02\x02\x02' +
-    '" \x03\x02\x02\x02#$\x05\x0E\b\x02$\t\x03\x02\x02\x02%&\x07\x15\x02\x02' +
-    "&\v\x03\x02\x02\x02'(\x07\x13\x02\x02()\x05\x04\x03\x02)\r\x03\x02\x02" +
-    '\x02*+\b\b\x01\x02+5\x07\x14\x02\x02,5\x07\x16\x02\x02-5\x07\x12\x02\x02' +
-    '.5\x05\f\x07\x02/5\x05\n\x06\x0201\x07\x03\x02\x0212\x05\x0E\b\x0223\x07' +
-    '\x04\x02\x0235\x03\x02\x02\x024*\x03\x02\x02\x024,\x03\x02\x02\x024-\x03' +
-    '\x02\x02\x024.\x03\x02\x02\x024/\x03\x02\x02\x0240\x03\x02\x02\x025A\x03' +
-    '\x02\x02\x0267\f\x05\x02\x0278\t\x02\x02\x028@\x05\x0E\b\x069:\f\x04\x02' +
-    '\x02:;\t\x03\x02\x02;@\x05\x0E\b\x05<=\f\x03\x02\x02=>\t\x04\x02\x02>' +
-    '@\x05\x0E\b\x04?6\x03\x02\x02\x02?9\x03\x02\x02\x02?<\x03\x02\x02\x02' +
-    '@C\x03\x02\x02\x02A?\x03\x02\x02\x02AB\x03\x02\x02\x02B\x0F\x03\x02\x02' +
-    '\x02CA\x03\x02\x02\x02\b\x15\x17 4?A';
+    '\t\x07\x04\b\t\b\x03\x02\x03\x02\x05\x02\x13\n\x02\x03\x03\x03\x03\x03' +
+    '\x03\x05\x03\x18\n\x03\x05\x03\x1A\n\x03\x03\x03\x03\x03\x03\x04\x03\x04' +
+    '\x03\x04\x07\x04!\n\x04\f\x04\x0E\x04$\v\x04\x03\x05\x03\x05\x03\x06\x03' +
+    '\x06\x03\x07\x03\x07\x03\x07\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b' +
+    '\x03\b\x03\b\x03\b\x05\b7\n\b\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b\x03' +
+    '\b\x03\b\x03\b\x07\bB\n\b\f\b\x0E\bE\v\b\x03\b\x02\x02\x03\x0E\t\x02\x02' +
+    '\x04\x02\x06\x02\b\x02\n\x02\f\x02\x0E\x02\x02\x05\x03\x02\n\v\x03\x02' +
+    '\b\t\x03\x02\f\x11\x02K\x02\x12\x03\x02\x02\x02\x04\x14\x03\x02\x02\x02' +
+    "\x06\x1D\x03\x02\x02\x02\b%\x03\x02\x02\x02\n'\x03\x02\x02\x02\f)\x03" +
+    '\x02\x02\x02\x0E6\x03\x02\x02\x02\x10\x13\x05\x0E\b\x02\x11\x13\x07\x17' +
+    '\x02\x02\x12\x10\x03\x02\x02\x02\x12\x11\x03\x02\x02\x02\x13\x03\x03\x02' +
+    '\x02\x02\x14\x19\x07\x03\x02\x02\x15\x17\x05\x06\x04\x02\x16\x18\x07\x07' +
+    '\x02\x02\x17\x16\x03\x02\x02\x02\x17\x18\x03\x02\x02\x02\x18\x1A\x03\x02' +
+    '\x02\x02\x19\x15\x03\x02\x02\x02\x19\x1A\x03\x02\x02\x02\x1A\x1B\x03\x02' +
+    '\x02\x02\x1B\x1C\x07\x04\x02\x02\x1C\x05\x03\x02\x02\x02\x1D"\x05\b\x05' +
+    '\x02\x1E\x1F\x07\x07\x02\x02\x1F!\x05\b\x05\x02 \x1E\x03\x02\x02\x02!' +
+    '$\x03\x02\x02\x02" \x03\x02\x02\x02"#\x03\x02\x02\x02#\x07\x03\x02\x02' +
+    '\x02$"\x03\x02\x02\x02%&\x05\x0E\b\x02&\t\x03\x02\x02\x02\'(\x07\x15' +
+    '\x02\x02(\v\x03\x02\x02\x02)*\x07\x13\x02\x02*+\x05\x04\x03\x02+\r\x03' +
+    '\x02\x02\x02,-\b\b\x01\x02-7\x07\x14\x02\x02.7\x07\x16\x02\x02/7\x07\x12' +
+    '\x02\x0207\x05\f\x07\x0217\x05\n\x06\x0223\x07\x03\x02\x0234\x05\x0E\b' +
+    '\x0245\x07\x04\x02\x0257\x03\x02\x02\x026,\x03\x02\x02\x026.\x03\x02\x02' +
+    '\x026/\x03\x02\x02\x0260\x03\x02\x02\x0261\x03\x02\x02\x0262\x03\x02\x02' +
+    '\x027C\x03\x02\x02\x0289\f\x05\x02\x029:\t\x02\x02\x02:B\x05\x0E\b\x06' +
+    ';<\f\x04\x02\x02<=\t\x03\x02\x02=B\x05\x0E\b\x05>?\f\x03\x02\x02?@\t\x04' +
+    '\x02\x02@B\x05\x0E\b\x04A8\x03\x02\x02\x02A;\x03\x02\x02\x02A>\x03\x02' +
+    '\x02\x02BE\x03\x02\x02\x02CA\x03\x02\x02\x02CD\x03\x02\x02\x02D\x0F\x03' +
+    '\x02\x02\x02EC\x03\x02\x02\x02\t\x12\x17\x19"6AC';
   public static __ATN: ATN;
   public static get _ATN(): ATN {
     if (!FormulaParser.__ATN) {
@@ -676,8 +699,11 @@ export class FormulaParser extends Parser {
 }
 
 export class StatContext extends ParserRuleContext {
-  public singleExpression(): SingleExpressionContext {
-    return this.getRuleContext(0, SingleExpressionContext);
+  public singleExpression(): SingleExpressionContext | undefined {
+    return this.tryGetRuleContext(0, SingleExpressionContext);
+  }
+  public NEWLINE(): TerminalNode | undefined {
+    return this.tryGetToken(FormulaParser.NEWLINE, 0);
   }
   constructor(parent: ParserRuleContext | undefined, invokingState: number) {
     super(parent, invokingState);
