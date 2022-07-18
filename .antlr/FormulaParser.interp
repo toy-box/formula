@@ -47,7 +47,7 @@ StringLiteral
 WhiteSpaces
 
 rule names:
-stat
+state
 arguments
 argumentList
 argument

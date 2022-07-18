@@ -1,4 +1,4 @@
-// Generated from d:\code\nodejs\formula\FormulaParser.g4 by ANTLR 4.8
+// Generated from /Users/huhui/Code/formula/FormulaParser.g4 by ANTLR 4.8
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -21,11 +21,11 @@ public class FormulaParser extends Parser {
 		BooleanLiteral=16, FunctionLiteral=17, FieldLiteral=18, DecimalLiteral=19, 
 		StringLiteral=20, WhiteSpaces=21;
 	public static final int
-		RULE_stat = 0, RULE_arguments = 1, RULE_argumentList = 2, RULE_argument = 3, 
+		RULE_state = 0, RULE_arguments = 1, RULE_argumentList = 2, RULE_argument = 3, 
 		RULE_variable = 4, RULE_function = 5, RULE_singleExpression = 6;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"stat", "arguments", "argumentList", "argument", "variable", "function", 
+			"state", "arguments", "argumentList", "argument", "variable", "function", 
 			"singleExpression"
 		};
 	}
@@ -97,19 +97,19 @@ public class FormulaParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
-	public static class StatContext extends ParserRuleContext {
+	public static class StateContext extends ParserRuleContext {
 		public SingleExpressionContext singleExpression() {
 			return getRuleContext(SingleExpressionContext.class,0);
 		}
-		public StatContext(ParserRuleContext parent, int invokingState) {
+		public StateContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_stat; }
+		@Override public int getRuleIndex() { return RULE_state; }
 	}
 
-	public final StatContext stat() throws RecognitionException {
-		StatContext _localctx = new StatContext(_ctx, getState());
-		enterRule(_localctx, 0, RULE_stat);
+	public final StateContext state() throws RecognitionException {
+		StateContext _localctx = new StateContext(_ctx, getState());
+		enterRule(_localctx, 0, RULE_state);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
